@@ -1,0 +1,3679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سِلفة — وفّر مع ناسك</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #1B365D;
+            --navy-light: #243f6c;
+            --teal: #0D9488;
+            --teal-dark: #0b7f74;
+            --teal-light: #14b8a6;
+            --gold: #F5C542;
+            --gold-light: #fbd872;
+            --light-bg: #F8FAFC;
+            --dark-bg: #0F172A;
+            --dark-card: #1E293B;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --shadow: 0 4px 24px rgba(27, 54, 93, 0.08);
+            --shadow-card: 0 2px 12px rgba(27, 54, 93, 0.06);
+            --shadow-lg: 0 12px 40px rgba(27, 54, 93, 0.12);
+            --radius: 16px;
+            --radius-sm: 12px;
+            --radius-xs: 8px;
+            --font-size-display: clamp(40px, 6vw, 68px);
+        }
+
+        /* ── Scroll progress bar ── */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background: var(--teal);
+            width: 0%;
+            z-index: 999;
+            transition: width 0.1s linear;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            color: var(--text);
+            background: var(--light-bg);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ───────── NAV ───────── */
+        .nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: box-shadow 0.3s;
+        }
+
+        .nav.scrolled {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--navy);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--teal);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--navy);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(245, 197, 66, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border: 2px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--navy);
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn-large {
+            padding: 16px 40px;
+            font-size: 17px;
+            border-radius: var(--radius);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2.5px;
+            background: var(--navy);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            right: 0;
+            left: 0;
+            background: var(--white);
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            z-index: 99;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 14px 0;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-menu a:last-child {
+            border: none;
+        }
+
+        /* ───────── HERO ───────── */
+        .hero {
+            padding: 140px 24px 80px;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .hero-content {
+            max-width: 560px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(13, 148, 136, 0.08);
+            color: var(--teal);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 60px);
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--teal);
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 36px;
+            max-width: 460px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--navy);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Hero Phone Mockup */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Teal glow behind phone */
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(13,148,136,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Rotating ring SVG */
+        .phone-ring {
+            position: absolute;
+            width: 460px;
+            height: 460px;
+            animation: spin-ring 18s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes spin-ring {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .phone-mockup {
+            width: 340px;
+            height: 680px;
+            background: var(--white);
+            border-radius: 44px;
+            border: 6px solid var(--navy);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg), 0 0 0 2px rgba(27,54,93,0.05), 0 32px 80px rgba(13,148,136,0.12);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Floating notification cards */
+        .notif-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(27,54,93,0.12);
+            z-index: 2;
+            white-space: nowrap;
+            opacity: 0;
+            animation: notif-in 0.5s ease forwards;
+        }
+
+        .notif-card.notif-a {
+            top: 18%;
+            right: -24px;
+            color: #16a34a;
+            border-right: 3px solid #22c55e;
+            animation-delay: 0.9s;
+        }
+
+        .notif-card.notif-b {
+            bottom: 22%;
+            left: -24px;
+            color: var(--navy);
+            border-right: 3px solid var(--gold);
+            animation-delay: 1.4s;
+        }
+
+        @keyframes notif-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .notif-icon { font-size: 18px; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .phone-notch {
+            width: 120px;
+            height: 28px;
+            background: var(--navy);
+            border-radius: 0 0 16px 16px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .phone-screen {
+            padding: 20px;
+            height: 100%;
+        }
+
+        .phone-header {
+            text-align: center;
+            margin-bottom: 16px;
+            padding-top: 8px;
+        }
+
+        .phone-header h3 {
+            font-size: 14px;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .phone-header p {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Mini Circle Progress inside phone */
+        .mini-progress {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .mini-progress svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .mini-progress .track {
+            fill: none;
+            stroke: #E2E8F0;
+            stroke-width: 8;
+        }
+
+        .mini-progress .fill {
+            fill: none;
+            stroke: var(--teal);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 251;
+            stroke-dashoffset: 167;
+            transition: stroke-dashoffset 1.5s ease;
+        }
+
+        .mini-progress .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .mini-progress .center-text strong {
+            display: block;
+            font-size: 18px;
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        .mini-progress .center-text span {
+            font-size: 9px;
+            color: var(--text-light);
+        }
+
+        .phone-payout {
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 14px;
+        }
+
+        .phone-payout .amount {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .phone-payout .label {
+            font-size: 10px;
+            opacity: 0.85;
+        }
+
+        /* Mini timeline items */
+        .phone-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .phone-timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--radius-xs);
+            font-size: 11px;
+        }
+
+        .phone-timeline-item.done {
+            background: #f0fdf4;
+        }
+
+        .phone-timeline-item.current {
+            background: rgba(13, 148, 136, 0.08);
+            border: 1.5px solid var(--teal);
+        }
+
+        .phone-timeline-item.you {
+            background: rgba(245, 197, 66, 0.1);
+            border: 1.5px solid var(--gold);
+        }
+
+        .tl-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .done .tl-dot {
+            background: #22c55e;
+            color: white;
+        }
+
+        .current .tl-dot {
+            background: var(--teal);
+            color: white;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .you .tl-dot {
+            background: var(--gold);
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        .tl-info {
+            flex: 1;
+        }
+
+        .tl-info strong {
+            display: block;
+            font-size: 11px;
+            color: var(--navy);
+        }
+
+        .tl-info span {
+            font-size: 9px;
+            color: var(--text-light);
+        }
+
+        .tl-status {
+            font-size: 9px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .done .tl-status { color: #22c55e; }
+        .current .tl-status { color: var(--teal); }
+        .you .tl-status { color: var(--gold); font-weight: 800; }
+
+        /* Phone timeline stagger animation */
+        @keyframes slideInItem {
+            from { opacity: 0; transform: translateX(12px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .phone-timeline-item {
+            opacity: 0;
+        }
+
+        .phone-timeline-item.tl-animated {
+            animation: slideInItem 0.45s ease forwards;
+        }
+        .phone-timeline-item.tl-animated:nth-child(1) { animation-delay: 0.15s; }
+        .phone-timeline-item.tl-animated:nth-child(2) { animation-delay: 0.4s; }
+        .phone-timeline-item.tl-animated:nth-child(3) { animation-delay: 0.65s; }
+
+        /* Phone progress circle animation */
+        .mini-progress .fill {
+            stroke-dashoffset: 251; /* start empty */
+            transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mini-progress.circle-animated .fill {
+            stroke-dashoffset: 167; /* 4/12 = 33% */
+        }
+
+        /* Phone pay button pulse */
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(13,148,136,0.4); }
+            60%       { box-shadow: 0 0 0 8px rgba(13,148,136,0); }
+        }
+        .phone-pay-btn.btn-pulse {
+            animation: btnPulse 1.8s ease 1.2s 2;
+        }
+
+        .phone-pay-btn {
+            margin-top: 14px;
+            width: 100%;
+            padding: 10px;
+            background: var(--teal);
+            color: white;
+            border: none;
+            border-radius: var(--radius-xs);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: default;
+        }
+
+        /* ───────── AHA MOMENT ───────── */
+        .aha-section {
+            padding: 64px 24px;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .aha-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .aha-title {
+            font-size: var(--font-size-display);
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.15;
+        }
+
+        .aha-title span { color: var(--teal); }
+
+        .aha-sub {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 52px;
+        }
+
+        /* Circle diagram */
+        .circle-diagram {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 0 auto 48px;
+        }
+
+        .circle-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            background: var(--navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            z-index: 2;
+            box-shadow: 0 4px 16px rgba(27,54,93,0.25);
+        }
+
+        .circle-node {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(13,148,136,0.08);
+            border: 2px solid var(--teal);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 2;
+            transition: transform 0.3s;
+        }
+
+        .circle-node:hover { transform: scale(1.15); }
+
+        .circle-node.you-node {
+            background: rgba(245,197,66,0.12);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 4px rgba(245,197,66,0.15);
+        }
+
+        .circle-node-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-top: 1px;
+            white-space: nowrap;
+        }
+
+        .circle-svg-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Aha stats row */
+        .aha-formula {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .aha-formula .formula-op {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .aha-formula .formula-result {
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 20px;
+        }
+
+        /* ───────── HOW IT WORKS ───────── */
+        .section {
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .section-desc {
+            font-size: 17px;
+            color: var(--text-light);
+            max-width: 560px;
+            margin-bottom: 56px;
+            line-height: 1.8;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            position: relative;
+        }
+
+        .steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 52px;
+            right: calc(16.66% + 30px);
+            left: calc(16.66% + 30px);
+            height: 3px;
+            background: linear-gradient(to left, var(--teal), var(--gold));
+            border-radius: 2px;
+            z-index: 0;
+        }
+
+        .step-card {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-icon {
+            width: 104px;
+            height: 104px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 3px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover .step-icon {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 8px rgba(13, 148, 136, 0.06);
+            transform: scale(1.05);
+        }
+
+        .step-icon .step-emoji {
+            font-size: 40px;
+            line-height: 1;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-icon svg {
+            width: 44px;
+            height: 44px;
+            color: var(--teal);
+        }
+
+        .step-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* ───────── FEATURES ───────── */
+        .features-section {
+            background: var(--white);
+            border-radius: 0;
+            padding: 72px 24px;
+        }
+
+        .features-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-card);
+        }
+
+        .feature-card:hover {
+            border-color: var(--teal);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            background: var(--white);
+        }
+
+        .feature-emoji {
+            font-size: 36px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon.timeline-icon { background: rgba(13, 148, 136, 0.1); }
+        .feature-icon.trust-icon { background: rgba(245, 197, 66, 0.15); }
+        .feature-icon.pay-icon { background: rgba(27, 54, 93, 0.08); }
+
+        .feature-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* ───────── TRUST SECTION ───────── */
+        .trust-section {
+            background: var(--dark-bg);
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.06);
+            top: -200px;
+            left: -100px;
+        }
+
+        .trust-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trust-section .section-label {
+            color: var(--gold);
+        }
+
+        .trust-section .section-title {
+            color: var(--white);
+        }
+
+        .trust-section .section-desc {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .trust-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+            transition: all 0.3s;
+        }
+
+        .trust-card:hover {
+            border-color: rgba(13, 148, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .trust-card-icon {
+            font-size: 36px;
+            line-height: 1;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        .trust-card-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--teal-light);
+        }
+
+        .trust-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .trust-card p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.7;
+        }
+
+        /* Shield visual */
+        .shield-bg {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0.03;
+        }
+
+        /* ───────── TESTIMONIALS ───────── */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .testimonial-stars {
+            color: var(--gold);
+            font-size: 16px;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-card blockquote {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--white);
+        }
+
+        .testimonial-author-info strong {
+            display: block;
+            font-size: 14px;
+            color: var(--navy);
+        }
+
+        .testimonial-author-info span {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* ───────── FAQ ───────── */
+        .faq-section {
+            padding: 100px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .faq-item.open {
+            border-color: var(--teal);
+            box-shadow: 0 4px 20px rgba(13, 148, 136, 0.08);
+        }
+
+        .faq-q {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 20px 24px;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .faq-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.08);
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: transform 0.3s, background 0.25s;
+            line-height: 1;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+            padding: 0 24px;
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+
+        /* ───────── FINAL CTA ───────── */
+        .cta-section {
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            border-radius: 24px;
+            padding: 64px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.1);
+            top: -100px;
+            left: -50px;
+        }
+
+        .cta-box::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(245, 197, 66, 0.06);
+            bottom: -80px;
+            right: -40px;
+        }
+
+        .cta-box h2 {
+            font-size: clamp(28px, 4vw, 38px);
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box p {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box .btn {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-cta {
+            background: var(--teal);
+            color: var(--white);
+            padding: 18px 48px;
+            font-size: 18px;
+            border-radius: var(--radius);
+            animation: pulse-btn 3s infinite;
+        }
+
+        .btn-cta:hover {
+            background: var(--teal-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(13, 148, 136, 0.4);
+        }
+
+        @keyframes pulse-btn {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(13, 148, 136, 0); }
+        }
+
+        /* ───────── FOOTER ───────── */
+        .footer {
+            background: var(--dark-bg);
+            padding: 48px 24px 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .footer-logo span {
+            color: var(--teal);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .footer-social a:hover {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 24px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+        }
+
+        /* ───────── ANIMATIONS ───────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ───────── RESPONSIVE ───────── */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 120px;
+                min-height: auto;
+                gap: 40px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero p {
+                max-width: 100%;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .steps-grid::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 100px;
+                padding-bottom: 40px;
+                gap: 40px;
+                overflow: hidden;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+                max-width: 100%;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-stats {
+                gap: 24px;
+            }
+
+            .hero-visual {
+                min-height: 320px;
+            }
+
+            .hero-visual::before {
+                width: 280px;
+                height: 280px;
+            }
+
+            .phone-mockup {
+                width: min(260px, 72vw);
+                height: min(520px, 144vw);
+            }
+
+            .phone-ring {
+                width: min(320px, 88vw);
+                height: min(320px, 88vw);
+            }
+
+            .notif-card.notif-a { right: -4px; font-size: 12px; padding: 8px 10px; }
+            .notif-card.notif-b { left: -4px; font-size: 12px; padding: 8px 10px; }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .features-section {
+                padding: 60px 20px;
+            }
+
+            .trust-section {
+                padding: 60px 20px;
+            }
+
+            .steps-grid,
+            .features-grid,
+            .trust-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cta-box {
+                padding: 40px 24px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        /* ───────── WIZARD MODAL ───────── */
+        .wizard-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+            padding: 20px;
+        }
+
+        .wizard-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .wizard {
+            background: var(--white);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.2);
+            transform: translateY(30px) scale(0.96);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wizard-overlay.active .wizard {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Wizard Header */
+        .wizard-header {
+            padding: 24px 28px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .wizard-back {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+
+        .wizard-back:hover {
+            background: var(--border);
+            color: var(--navy);
+        }
+
+        .wizard-back.hidden {
+            visibility: hidden;
+        }
+
+        .wizard-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .wizard-close:hover {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        /* Progress Dots */
+        .wizard-progress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px 28px 0;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.4s ease;
+        }
+
+        .progress-dot.active {
+            background: var(--teal);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .progress-dot.done {
+            background: var(--teal);
+        }
+
+        /* Wizard Body */
+        .wizard-body {
+            padding: 28px;
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .wizard-step {
+            display: none;
+            animation: wizardFadeIn 0.4s ease;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        @keyframes wizardFadeIn {
+            from { opacity: 0; transform: translateX(-16px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .wizard-step-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .wizard-step-desc {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        /* Input styles */
+        .wizard-input-group {
+            margin-bottom: 20px;
+        }
+
+        .wizard-input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .wizard-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 17px;
+            color: var(--text);
+            background: var(--light-bg);
+            transition: all 0.25s;
+            outline: none;
+        }
+
+        .wizard-input:focus {
+            border-color: var(--teal);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+        }
+
+        .wizard-input::placeholder {
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+
+        /* Amount preset buttons */
+        .amount-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .amount-btn {
+            padding: 18px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            cursor: pointer;
+            transition: all 0.25s;
+            text-align: center;
+        }
+
+        .amount-btn span {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--teal);
+            background: rgba(13, 148, 136, 0.03);
+        }
+
+        .amount-btn.selected {
+            border-color: var(--teal);
+            background: rgba(13, 148, 136, 0.06);
+            color: var(--teal-dark);
+            box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.08);
+        }
+
+        .amount-divider {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 13px;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .amount-divider::before,
+        .amount-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .amount-divider::before { right: 0; }
+        .amount-divider::after { left: 0; }
+
+        /* Members stepper */
+        .members-stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin: 20px 0 28px;
+        }
+
+        .stepper-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stepper-btn:hover {
+            border-color: var(--teal);
+            background: rgba(13, 148, 136, 0.04);
+        }
+
+        .stepper-btn:active {
+            transform: scale(0.93);
+        }
+
+        .stepper-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .stepper-value {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stepper-value .number {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .stepper-value .unit {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Live preview card */
+        .live-preview {
+            background: linear-gradient(135deg, rgba(13,148,136,0.06), rgba(245,197,66,0.06));
+            border: 1px solid rgba(13, 148, 136, 0.15);
+            border-radius: var(--radius-sm);
+            padding: 18px 20px;
+            margin-top: 8px;
+        }
+
+        .live-preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .live-preview-row:not(:last-child) {
+            border-bottom: 1px solid rgba(13, 148, 136, 0.08);
+        }
+
+        .live-preview-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .live-preview-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .live-preview-value.highlight {
+            color: var(--teal);
+            font-size: 17px;
+        }
+
+        /* Review card (step 4) */
+        .review-card {
+            background: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .review-row:not(:last-child) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .review-row .label {
+            font-size: 14px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .review-row .label svg {
+            width: 18px;
+            height: 18px;
+            opacity: 0.5;
+        }
+
+        .review-row .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .review-highlight {
+            background: linear-gradient(135deg, var(--teal), var(--teal-light));
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .review-highlight .big {
+            font-size: 32px;
+            font-weight: 800;
+            display: block;
+        }
+
+        .review-highlight .sub {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        /* Wizard footer / next button */
+        .wizard-footer {
+            padding: 0 28px 12px;
+        }
+
+        .wizard-trust-nudge {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 12px;
+        }
+
+        .wizard-bottom-trust {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            padding: 0 28px 20px;
+            margin: 0;
+        }
+
+        .wizard-next {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--teal);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .wizard-next:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
+        }
+
+        .wizard-next:active {
+            transform: translateY(0);
+        }
+
+        .wizard-next:disabled {
+            background: var(--border);
+            color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Success state */
+        .wizard-success {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .success-icon {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: rgba(13, 148, 136, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--teal);
+        }
+
+        .wizard-success h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .wizard-success p {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        .invite-link-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--light-bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 6px 6px 16px;
+            margin-bottom: 16px;
+        }
+
+        .invite-link-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            min-width: 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .copy-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--radius-xs);
+            background: var(--navy);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background: var(--navy-light);
+        }
+
+        .copy-btn.copied {
+            background: var(--teal);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .share-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+
+        .share-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            transform: translateY(-2px);
+        }
+
+        .share-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Confetti canvas */
+        .confetti-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            pointer-events: none;
+        }
+
+        /* ───────── CONTACTS STEP ───────── */
+        .contacts-search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .contacts-search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .contacts-search {
+            padding-right: 44px !important;
+        }
+
+        .selected-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            min-height: 40px;
+        }
+
+        .selected-member {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(13, 148, 136, 0.08);
+            border: 1px solid rgba(13, 148, 136, 0.2);
+            border-radius: 50px;
+            padding: 5px 12px 5px 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--teal-dark);
+            animation: chipPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes chipPop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .selected-member.you-badge {
+            background: rgba(27, 54, 93, 0.06);
+            border-color: rgba(27, 54, 93, 0.15);
+            color: var(--navy);
+        }
+
+        .selected-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .selected-name {
+            white-space: nowrap;
+        }
+
+        .selected-remove {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(13, 148, 136, 0.15);
+            color: var(--teal-dark);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: -4px;
+            margin-left: 2px;
+            transition: all 0.15s;
+            line-height: 1;
+        }
+
+        .selected-remove:hover {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .contacts-counter {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        .contacts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 240px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        .contacts-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .contact-item:hover {
+            background: var(--light-bg);
+        }
+
+        .contact-item.selected {
+            background: rgba(13, 148, 136, 0.04);
+            border-color: var(--teal);
+        }
+
+        .contact-item.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .contact-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+        }
+
+        .contact-phone {
+            font-size: 12px;
+            color: var(--text-light);
+            direction: ltr;
+            text-align: right;
+        }
+
+        .contact-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .contact-item.selected .contact-check {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white;
+        }
+
+        .contact-check svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .contact-item.selected .contact-check svg {
+            opacity: 1;
+        }
+
+        .contact-item-hidden {
+            display: none !important;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-size: 14px;
+            display: none;
+        }
+
+        /* ── Invite Request Flow ── */
+        .invite-btn {
+            padding: 6px 14px;
+            border: 1.5px solid var(--teal);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--teal);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .invite-btn:hover {
+            background: rgba(13, 148, 136, 0.08);
+            transform: scale(1.03);
+        }
+
+        .invite-btn.pending {
+            border-color: var(--gold);
+            color: #92400e;
+            background: rgba(245, 197, 66, 0.12);
+            cursor: default;
+            transform: none !important;
+        }
+
+        @keyframes sendPop {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .invite-btn.sending { animation: sendPop 0.28s ease; }
+
+        .contact-item.invited {
+            background: rgba(245, 197, 66, 0.04) !important;
+            border-color: rgba(245, 197, 66, 0.2) !important;
+        }
+
+        /* Invite counter bar */
+        .invite-counter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: var(--light-bg);
+            border: 1px solid var(--border);
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .invite-counter.has-invites {
+            background: rgba(245, 197, 66, 0.07);
+            border-color: rgba(245, 197, 66, 0.3);
+            color: var(--navy);
+        }
+
+        .invite-counter .counter-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .counter-num {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--teal);
+            min-width: 18px;
+        }
+
+        .invite-counter.has-invites .counter-num { color: #92400e; }
+
+        .counter-pending-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .invite-counter.has-invites .counter-pending-label { color: #92400e; }
+
+        /* Pending list in success screen */
+        .pending-members-section {
+            width: 100%;
+            margin: 12px 0 6px;
+            text-align: right;
+        }
+
+        .pending-members-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .pending-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        .pending-member-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            background: rgba(245, 197, 66, 0.06);
+            border: 1px solid rgba(245, 197, 66, 0.18);
+        }
+
+        .pending-member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .pending-member-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .pending-status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: #92400e;
+            background: rgba(245, 197, 66, 0.2);
+            padding: 3px 9px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        .invite-alt-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            font-size: 12px;
+            margin: 14px 0 10px;
+            width: 100%;
+        }
+
+        .invite-alt-divider::before,
+        .invite-alt-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .success-notify-nudge {
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: center;
+            margin: 8px 0 0;
+            width: 100%;
+        }
+
+        .add-manual-btn {
+            width: 100%;
+            padding: 14px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .add-manual-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .add-manual-btn:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+            background: rgba(13, 148, 136, 0.03);
+        }
+
+        .manual-add-form {
+            margin-top: 12px;
+        }
+
+        .manual-add-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .manual-input {
+            padding: 12px 14px !important;
+            font-size: 14px !important;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .manual-add-confirm {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-xs);
+            background: var(--teal);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .manual-add-confirm:hover {
+            background: var(--teal-dark);
+        }
+
+        @media (max-width: 768px) {
+            .manual-add-row {
+                flex-wrap: wrap;
+            }
+
+            .manual-input {
+                flex: 1 1 calc(50% - 4px);
+            }
+
+            .manual-add-confirm {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wizard {
+                max-width: 100%;
+                max-height: 100vh;
+                border-radius: 20px 20px 0 0;
+                margin-top: auto;
+            }
+
+            .wizard-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .wizard-overlay.active .wizard {
+                transform: translateY(0);
+            }
+
+            .wizard-step-title {
+                font-size: 22px;
+            }
+
+            .amount-presets {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stepper-value .number {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="scroll-progress"></div>
+
+    <!-- ═══════ NAV ═══════ -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo">سِلـ<span>فة</span></a>
+            <ul class="nav-links">
+                <li><a href="#how">كيف تعمل</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#faq">الأسئلة</a></li>
+                <li><a href="#" class="btn btn-gold open-wizard">أنشئ سِلفتك</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#how" onclick="closeMobile()">كيف تعمل</a>
+        <a href="#features" onclick="closeMobile()">المميزات</a>
+        <a href="#faq" onclick="closeMobile()">الأسئلة</a>
+        <a href="#" class="btn btn-gold open-wizard" style="margin-top:12px;text-align:center;" onclick="closeMobile()">أنشئ سِلفتك</a>
+    </div>
+
+    <!-- ═══════ HERO ═══════ -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">متاح الآن في العراق</div>
+            <h1>وفّر مع أهلك،<br>بـ<span class="highlight">ثقة</span> وشفافية</h1>
+            <p>سِلفة تُنظّم توفيرك الجماعي بالكامل — من الجدول الزمني إلى الدفع والاستلام. كل شيء واضح، كل شيء مضمون.</p>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-primary btn-large open-wizard">أنشئ سِلفتك الأولى</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">١٠٠٠+</span>
+                    <span class="stat-label">سِلفة نشطة</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">٩٥٪</span>
+                    <span class="stat-label">نسبة الالتزام</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">مجاني</span>
+                    <span class="stat-label">بدون رسوم</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <svg class="phone-ring" viewBox="0 0 460 460" fill="none">
+                <circle cx="230" cy="230" r="210" stroke="url(#ringGrad)" stroke-width="1.5" stroke-dasharray="12 8" opacity="0.5"/>
+                <defs>
+                    <linearGradient id="ringGrad" x1="0" y1="0" x2="460" y2="460" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#0D9488"/>
+                        <stop offset="100%" stop-color="#F5C542"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="notif-card notif-a">
+                <span class="notif-icon">✅</span>
+                <span>فاطمة دفعت ٥٠٠ د.ع</span>
+            </div>
+            <div class="notif-card notif-b">
+                <span class="notif-icon">🎯</span>
+                <span>دورك الشهر القادم!</span>
+            </div>
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <h3>سِلفة العائلة</h3>
+                        <p>الشهر ٤ من ١٢</p>
+                    </div>
+
+                    <div class="mini-progress">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="track" cx="50" cy="50" r="40"/>
+                            <circle class="fill" cx="50" cy="50" r="40"/>
+                        </svg>
+                        <div class="center-text">
+                            <strong>٤/١٢</strong>
+                            <span>شهر</span>
+                        </div>
+                    </div>
+
+                    <div class="phone-payout">
+                        <div class="label">موعد استلامك</div>
+                        <div class="amount">٤,٩٠٠ د.ع</div>
+                        <div class="label">بعد ١٢ يوم</div>
+                    </div>
+
+                    <div class="phone-timeline">
+                        <div class="phone-timeline-item done">
+                            <div class="tl-dot">✓</div>
+                            <div class="tl-info">
+                                <strong>فاطمة ر.</strong>
+                                <span>يناير ٢٠٢٦</span>
+                            </div>
+                            <div class="tl-status">اكتمل</div>
+                        </div>
+                        <div class="phone-timeline-item current">
+                            <div class="tl-dot">◉</div>
+                            <div class="tl-info">
+                                <strong>أحمد ح.</strong>
+                                <span>أبريل ٢٠٢٦</span>
+                            </div>
+                            <div class="tl-status">٨/١٠ دفعوا</div>
+                        </div>
+                        <div class="phone-timeline-item you">
+                            <div class="tl-dot">★</div>
+                            <div class="tl-info">
+                                <strong>أنت</strong>
+                                <span>مايو ٢٠٢٦</span>
+                            </div>
+                            <div class="tl-status">دورك!</div>
+                        </div>
+                    </div>
+
+                    <button class="phone-pay-btn">ادفع الشهر ٤ — ٥٠٠ د.ع</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ AHA MOMENT ═══════ -->
+    <section class="aha-section">
+        <div class="aha-inner reveal">
+            <p class="aha-sub">كيف تشتغل السِلفة؟</p>
+            <h2 class="aha-title">كل شهر شخص <span>يستلم</span><br>كل عضو يدور</h2>
+
+            <div class="circle-diagram">
+                <!-- connector lines -->
+                <svg class="circle-svg-bg" viewBox="0 0 260 260">
+                    <line x1="130" y1="130" x2="130" y2="12"  stroke="#E2E8F0" stroke-width="1.5"/>
+                    <line x1="130" y1="130" x2="238" y2="65"  stroke="#E2E8F0" stroke-width="1.5"/>
+                    <line x1="130" y1="130" x2="238" y2="195" stroke="#E2E8F0" stroke-width="1.5"/>
+                    <line x1="130" y1="130" x2="130" y2="248" stroke="#E2E8F0" stroke-width="1.5"/>
+                    <line x1="130" y1="130" x2="22"  y2="195" stroke="#E2E8F0" stroke-width="1.5"/>
+                    <line x1="130" y1="130" x2="22"  y2="65"  stroke="#E2E8F0" stroke-width="1.5"/>
+                    <!-- animated highlight arc -->
+                    <circle cx="130" cy="130" r="108" fill="none" stroke="var(--teal)" stroke-width="2"
+                            stroke-dasharray="30 650" stroke-linecap="round" opacity="0.6">
+                        <animateTransform attributeName="transform" type="rotate"
+                            from="0 130 130" to="360 130 130" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <!-- center pot -->
+                <div class="circle-center">💰</div>
+                <!-- nodes: top, top-right, bottom-right, bottom, bottom-left, top-left -->
+                <div class="circle-node you-node" style="top:-12px;left:50%;transform:translateX(-50%)">
+                    <span>👤</span><span class="circle-node-label">أنت</span>
+                </div>
+                <div class="circle-node" style="top:12px;right:-12px">
+                    <span>👤</span><span class="circle-node-label">أحمد</span>
+                </div>
+                <div class="circle-node" style="bottom:12px;right:-12px">
+                    <span>👤</span><span class="circle-node-label">زينب</span>
+                </div>
+                <div class="circle-node" style="bottom:-12px;left:50%;transform:translateX(-50%)">
+                    <span>👤</span><span class="circle-node-label">محمد</span>
+                </div>
+                <div class="circle-node" style="bottom:12px;left:-12px">
+                    <span>👤</span><span class="circle-node-label">نور</span>
+                </div>
+                <div class="circle-node" style="top:12px;left:-12px">
+                    <span>👤</span><span class="circle-node-label">علي</span>
+                </div>
+            </div>
+
+            <div class="aha-formula">
+                <span>٦ أشخاص</span>
+                <span class="formula-op">×</span>
+                <span>٥٠,٠٠٠ دينار</span>
+                <span class="formula-op">=</span>
+                <span class="formula-result">🎯 ٣٠٠,٠٠٠ دينار لكل عضو</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ HOW IT WORKS ═══════ -->
+    <section class="section" id="how">
+        <div class="reveal">
+            <div class="section-label">كيف تعمل</div>
+            <h2 class="section-title">ثلاث خطوات وتبدأ</h2>
+            <p class="section-desc">لا تحتاج خبرة مالية ولا إجراءات معقدة. أنشئ سِلفتك، ادعُ أصدقاءك، وابدأ التوفير.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="step-icon">
+                    <span class="step-number">١</span>
+                    <span class="step-emoji">🏦</span>
+                </div>
+                <h3>أنشئ السِلفة</h3>
+                <p>حدد المبلغ الشهري وعدد الأعضاء وجدول الدفع. تبدأ السِلفة فور اكتمال العدد.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-icon">
+                    <span class="step-number">٢</span>
+                    <span class="step-emoji">📨</span>
+                </div>
+                <h3>ادعُ أصدقاءك</h3>
+                <p>شارك رابط الدعوة مع أهلك وأصدقائك. كل عضو يؤكد مشاركته بنقرة واحدة.</p>
+            </div>
+
+            <div class="step-card reveal">
+                <div class="step-icon">
+                    <span class="step-number">٣</span>
+                    <span class="step-emoji">💵</span>
+                </div>
+                <h3>استلم حصتك</h3>
+                <p>في دورك، تستلم المبلغ كاملاً مباشرة في حسابك. بدون تأخير، بدون قلق.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FEATURES ═══════ -->
+    <section class="features-section" id="features">
+        <div class="features-inner">
+            <div class="reveal">
+                <div class="section-label">المميزات</div>
+                <h2 class="section-title">كل ما تحتاجه في مكان واحد</h2>
+                <p class="section-desc">صمّمنا سِلفة لتكون بسيطة وقوية في نفس الوقت. لا تعقيد، فقط أدوات تخدمك وتخدم سِلفتك.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <span class="feature-emoji">📊</span>
+                    <h3>متابعة السِلفة لحظة بلحظة</h3>
+                    <p>اعرف من دفع، من لم يدفع، ومتى دورك بالضبط. كل شيء واضح ولا مجال للخلاف.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <span class="feature-emoji">🛡️</span>
+                    <h3>سجل الالتزام</h3>
+                    <p>كل عضو له سجل واضح. نسبة الالتزام وتاريخ الدفعات — شفافية كاملة بدون ضغط أو إحراج.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <span class="feature-emoji">⚡</span>
+                    <h3>دفع بنقرة واحدة</h3>
+                    <p>سدّد حصتك بثانيتين. ربط مباشر مع حسابك البنكي أو محفظتك الرقمية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ TRUST & SECURITY ═══════ -->
+    <section class="trust-section" id="trust">
+        <svg class="shield-bg" viewBox="0 0 24 24" fill="white">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <div class="trust-inner">
+            <div class="reveal">
+                <div class="section-label">الأمان</div>
+                <h2 class="section-title">أموالك في أمان تام</h2>
+                <p class="section-desc">بنينا سِلفة على أعلى معايير الأمان المالي. بياناتك وأموالك محمية على مدار الساعة.</p>
+            </div>
+
+            <div class="trust-grid">
+                <div class="trust-card reveal">
+                    <div class="trust-card-icon">🔐</div>
+                    <h3>تشفير شامل</h3>
+                    <p>جميع البيانات مشفرة بتقنية AES-256. لا أحد يطّلع على معلوماتك المالية سواك.</p>
+                </div>
+
+                <div class="trust-card reveal">
+                    <div class="trust-card-icon">🏛️</div>
+                    <h3>حماية بمستوى البنوك</h3>
+                    <p>نستخدم نفس البنية الأمنية المعتمدة في البنوك العراقية المرخصة. أموالك في أيدٍ أمينة.</p>
+                </div>
+
+                <div class="trust-card reveal">
+                    <div class="trust-card-icon">🧾</div>
+                    <h3>إيصالات فورية</h3>
+                    <p>كل عملية دفع واستلام موثّقة بإيصال رقمي. سجل كامل لكل دينار انتقل بين الأعضاء.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ WIZARD MODAL ═══════ -->
+    <div class="wizard-overlay" id="wizardOverlay">
+        <div class="wizard">
+            <div class="wizard-header">
+                <button class="wizard-back hidden" id="wizardBack" aria-label="رجوع">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+                <button class="wizard-close" id="wizardClose" aria-label="إغلاق">✕</button>
+            </div>
+
+            <div class="wizard-progress">
+                <div class="progress-dot active" data-step="1"></div>
+                <div class="progress-dot" data-step="2"></div>
+                <div class="progress-dot" data-step="3"></div>
+            </div>
+
+            <div class="wizard-body">
+
+                <!-- ── Step 1: Name ── -->
+                <!-- ── Step 1: Name + Amount ── -->
+                <div class="wizard-step active" data-step="1">
+                    <h2 class="wizard-step-title">🏦 أنشئ سِلفتك</h2>
+                    <p class="wizard-step-desc">اسمها وحصتها الشهرية — ثلاثون ثانية وتنتهي.</p>
+                    <div class="wizard-input-group">
+                        <label for="circleName">اسم السِلفة</label>
+                        <input type="text" class="wizard-input" id="circleName" placeholder="مثال: سِلفة العائلة" maxlength="40" autocomplete="off">
+                    </div>
+                    <div class="wizard-input-group" style="margin-top:16px;">
+                        <label>الحصة الشهرية لكل عضو</label>
+                        <div class="amount-presets">
+                            <button class="amount-btn" data-amount="50000">٥٠,٠٠٠ <span>د.ع</span></button>
+                            <button class="amount-btn" data-amount="100000">١٠٠,٠٠٠ <span>د.ع</span></button>
+                            <button class="amount-btn" data-amount="150000">١٥٠,٠٠٠ <span>د.ع</span></button>
+                            <button class="amount-btn" data-amount="200000">٢٠٠,٠٠٠ <span>د.ع</span></button>
+                        </div>
+                        <div class="amount-divider">أو أدخل مبلغاً مخصصاً</div>
+                        <input type="number" class="wizard-input" id="customAmount" placeholder="المبلغ بالدينار" min="50" max="50000" style="direction:ltr;text-align:right;">
+                    </div>
+                    <p class="wizard-trust-nudge">🔒 مجاني — لا رسوم، لا بطاقة</p>
+                </div>
+
+                <!-- ── Step 2: Members ── -->
+                <div class="wizard-step" data-step="2">
+                    <h2 class="wizard-step-title">كم عدد الأعضاء؟</h2>
+                    <p class="wizard-step-desc">عدد الأشخاص في السِلفة بمن فيهم أنت. كل عضو يستلم حصته مرة واحدة.</p>
+
+                    <div class="members-stepper">
+                        <button class="stepper-btn" id="membersMinus" aria-label="أقل">−</button>
+                        <div class="stepper-value">
+                            <div class="number" id="membersCount">٥</div>
+                            <div class="unit">أعضاء</div>
+                        </div>
+                        <button class="stepper-btn" id="membersPlus" aria-label="أكثر">+</button>
+                    </div>
+
+                    <div class="live-preview" id="membersPreview">
+                        <div class="live-preview-row">
+                            <span class="live-preview-label">كل عضو يدفع شهرياً</span>
+                            <span class="live-preview-value" id="previewMonthly">٥٠٠ د.ع</span>
+                        </div>
+                        <div class="live-preview-row">
+                            <span class="live-preview-label">كل عضو يستلم في دوره</span>
+                            <span class="live-preview-value highlight" id="previewPayout">٢,٥٠٠ د.ع</span>
+                        </div>
+                        <div class="live-preview-row">
+                            <span class="live-preview-label">مدة الحلقة</span>
+                            <span class="live-preview-value" id="previewDuration">٥ أشهر</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Step 3: Invite Members (request flow) ── -->
+                <div class="wizard-step" data-step="3">
+                    <h2 class="wizard-step-title">📨 ادعُ الأعضاء</h2>
+                    <p class="wizard-step-desc">سيصل لكل شخص طلب للموافقة على الانضمام إلى سِلفتك.</p>
+
+                    <div class="contacts-search-box">
+                        <svg class="contacts-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" class="wizard-input contacts-search" id="contactsSearch" placeholder="ابحث في جهات الاتصال...">
+                    </div>
+
+                    <!-- Invite counter bar -->
+                    <div class="invite-counter" id="inviteCounter">
+                        <div class="counter-left">
+                            <span class="counter-num" id="inviteCount">٠</span>
+                            <span>دعوات مُرسَلة</span>
+                        </div>
+                        <span class="counter-pending-label">ادعُ شخصاً واحداً على الأقل</span>
+                    </div>
+
+                    <div class="contacts-list" id="contactsList">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="no-results" id="noResults" style="display:none;">لا توجد نتائج</div>
+
+                    <button class="add-manual-btn" id="addManualBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+                        أضف عضواً يدوياً
+                    </button>
+
+                    <div class="manual-add-form" id="manualAddForm" style="display:none;">
+                        <div class="manual-add-row">
+                            <input type="text" class="wizard-input manual-input" id="manualName" placeholder="الاسم">
+                            <input type="tel" class="wizard-input manual-input" id="manualPhone" placeholder="رقم الهاتف" style="direction:ltr;text-align:right;">
+                            <button class="manual-add-confirm" id="manualAddConfirm">أضف</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Step 4: Success ── -->
+                <div class="wizard-step" data-step="4">
+                    <div class="wizard-success">
+                        <div class="success-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <h2>سِلفتك جاهزة!</h2>
+                        <p>أُرسلت الدعوات — في انتظار موافقة الأعضاء.</p>
+
+                        <!-- Pending invites list -->
+                        <div class="pending-members-section">
+                            <div class="pending-members-label">الدعوات المُرسَلة</div>
+                            <div class="pending-members-list" id="pendingMembersList">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <p class="success-notify-nudge">🔔 سنُعلمك فور موافقة كل عضو على الانضمام</p>
+
+                        <div class="invite-alt-divider">أو شارك الرابط مباشرة</div>
+
+                        <div class="invite-link-box">
+                            <input type="text" id="inviteLink" value="silfa.app/join/xK9mQ2" readonly>
+                            <button class="copy-btn" id="copyBtn">نسخ الرابط</button>
+                        </div>
+
+                        <div class="share-buttons">
+                            <button class="share-btn" aria-label="واتساب">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            </button>
+                            <button class="share-btn" aria-label="تيليجرام">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                            </button>
+                            <button class="share-btn" aria-label="رسالة نصية">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="wizard-footer" id="wizardFooter">
+                <button class="wizard-next" id="wizardNext" disabled>التالي</button>
+            </div>
+            <p class="wizard-bottom-trust" id="wizardBottomTrust">🔒 مجاني — لا رسوم، لا بطاقة بنكية</p>
+        </div>
+    </div>
+
+    <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+    <!-- ═══════ FAQ ═══════ -->
+    <section class="faq-section" id="faq">
+        <div class="reveal" style="text-align:center;">
+            <div class="section-label">الأسئلة الشائعة</div>
+            <h2 class="section-title">عندك سؤال؟</h2>
+            <p class="section-desc">الجواب هنا — كل ما تريد معرفته عن سِلفة.</p>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item reveal">
+                <button class="faq-q">
+                    <span>ما هي سِلفة بالضبط؟</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-a">سِلفة هي تطبيق لتنظيم الجمعيات الادخارية الجماعية — مجموعة من الأشخاص يدفع كل منهم مبلغاً ثابتاً شهرياً، ويستلم كل عضو المبلغ الكامل في دوره. سِلفة تُنظّم هذه العملية بالكامل رقمياً بدلاً من إدارتها يدوياً.</div>
+            </div>
+
+            <div class="faq-item reveal">
+                <button class="faq-q">
+                    <span>ماذا يحدث إذا لم يدفع أحد الأعضاء في الموعد؟</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-a">سِلفة ترسل تذكيرات تلقائية قبل موعد الدفع، وتُظهر لكل عضو حالة الدفعات في الوقت الفعلي. الشفافية الكاملة — كل عضو يعرف من دفع ومن لم يدفع — تقلل التأخر بشكل كبير.</div>
+            </div>
+
+            <div class="faq-item reveal">
+                <button class="faq-q">
+                    <span>كيف يُحدَّد ترتيب الاستلام؟</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-a">ترتيب الاستلام يُحدَّد عند إنشاء السِلفة بالتوافق بين الأعضاء. يمكن ترتيبه يدوياً حسب الأولوية أو عشوائياً بشكل عادل — كل شيء واضح ومتفق عليه مسبقاً وموثَّق داخل التطبيق.</div>
+            </div>
+
+            <div class="faq-item reveal">
+                <button class="faq-q">
+                    <span>هل أموالي وبياناتي آمنة؟</span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-a">نعم. نستخدم تشفير AES-256 لجميع البيانات، وحماية بمستوى البنوك العراقية المرخصة لمعاملاتك المالية. تعمل سِلفة على استكمال الإطار التنظيمي الكامل قبل الإطلاق الرسمي.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════ FINAL CTA ═══════ -->
+    <section class="cta-section" id="cta">
+        <div class="cta-box reveal">
+            <h2>جاهز لبدء رحلة التوفير؟</h2>
+            <p>أنشئ سِلفتك الأولى مجاناً وابدأ مع أهلك وأصدقائك. لا رسوم خفية، لا تعقيد.</p>
+            <a href="#" class="btn btn-cta open-wizard">أنشئ سِلفتك الآن — مجاناً</a>
+        </div>
+    </section>
+
+    <!-- ═══════ FOOTER ═══════ -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <a href="#" class="footer-logo">سِلـ<span>فة</span></a>
+            <ul class="footer-links">
+                <li><a href="#how">كيف تعمل</a></li>
+                <li><a href="#features">المميزات</a></li>
+                <li><a href="#trust">الأمان</a></li>
+                <li><a href="#">سياسة الخصوصية</a></li>
+                <li><a href="#">الشروط والأحكام</a></li>
+            </ul>
+            <div class="footer-social">
+                <a href="#" aria-label="تويتر">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="#" aria-label="انستقرام">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="#" aria-label="واتساب">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © ٢٠٢٦ سِلفة. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+
+    <script>
+        // ── Nav scroll effect + progress bar ──
+        const nav = document.getElementById('nav');
+        const scrollBar = document.getElementById('scroll-progress');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 10);
+            const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+            scrollBar.style.width = pct + '%';
+        });
+
+        // ── Mobile menu ──
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        function closeMobile() {
+            mobileMenu.classList.remove('active');
+        }
+
+        // ── Reveal on scroll ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ── Phone mockup animation ──
+        const phoneTimeline = document.querySelector('.phone-timeline');
+        const miniProgress  = document.querySelector('.mini-progress');
+        const payBtn        = document.querySelector('.phone-pay-btn');
+
+        const phoneObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                // Animate timeline items
+                entry.target.querySelectorAll('.phone-timeline-item').forEach(item => {
+                    item.classList.add('tl-animated');
+                });
+                // Animate progress circle
+                if (miniProgress) miniProgress.classList.add('circle-animated');
+                // Pulse pay button
+                if (payBtn) payBtn.classList.add('btn-pulse');
+                phoneObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.4 });
+
+        if (phoneTimeline) phoneObserver.observe(phoneTimeline);
+
+        // ── FAQ accordion ──
+        document.querySelectorAll('.faq-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                // Close all
+                document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                // Toggle clicked
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // ── Wizard Logic ──
+        const overlay = document.getElementById('wizardOverlay');
+        const backBtn = document.getElementById('wizardBack');
+        const closeBtn = document.getElementById('wizardClose');
+        const nextBtn = document.getElementById('wizardNext');
+        const wizardFooter = document.getElementById('wizardFooter');
+        const dots = document.querySelectorAll('.progress-dot');
+        const steps = document.querySelectorAll('.wizard-step');
+
+        const LAST_INPUT_STEP = 3; // add members (final input step)
+        const SUCCESS_STEP = 4;
+
+        let currentStep = 1;
+        let circleData = { name: '', amount: 0, members: 5 };
+        let selectedContacts = []; // array of {id, name, phone, color}
+
+        // Sample contacts (Iraqi names & numbers)
+        const sampleContacts = [
+            { id: 'c1', name: 'أحمد حسين', phone: '٠٧٧٠١٢٣٤٥٦٧', color: '#0D9488' },
+            { id: 'c2', name: 'زينب علي', phone: '٠٧٨١٩٨٧٦٥٤٣', color: '#7C3AED' },
+            { id: 'c3', name: 'محمد جاسم', phone: '٠٧٥٠٥٥٥١٢٣٤', color: '#DC2626' },
+            { id: 'c4', name: 'نور الهدى', phone: '٠٧٧٠٣٣٣٤٤٥٥', color: '#2563EB' },
+            { id: 'c5', name: 'علي كريم', phone: '٠٧٨١٢٢٢٣٣٤٤', color: '#D97706' },
+            { id: 'c6', name: 'فاطمة حسن', phone: '٠٧٥٠٧٧٧٨٨٩٩', color: '#059669' },
+            { id: 'c7', name: 'حسن عبدالله', phone: '٠٧٧٠٤٤٤٥٥٦٦', color: '#4F46E5' },
+            { id: 'c8', name: 'سارة محمود', phone: '٠٧٨١٦٦٦٧٧٨٨', color: '#BE185D' },
+            { id: 'c9', name: 'عمر فاضل', phone: '٠٧٥٠٨٨٨٩٩٠٠', color: '#0369A1' },
+            { id: 'c10', name: 'رقية خالد', phone: '٠٧٧٠٩٩٩٠٠١١', color: '#9333EA' },
+            { id: 'c11', name: 'مصطفى كاظم', phone: '٠٧٨١٣٣٣٢٢١١', color: '#B45309' },
+            { id: 'c12', name: 'هدى ناصر', phone: '٠٧٥٠٢٢٢١١٠٠', color: '#0F766E' },
+        ];
+        let manualIdCounter = 100;
+
+        // Arabic number helper
+        function toAr(n) {
+            const d = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+            return String(n).replace(/\d/g, c => d[c]);
+        }
+
+        function formatAr(n) {
+            return toAr(n.toLocaleString('en-US'));
+        }
+
+        // Open wizard
+        document.querySelectorAll('.open-wizard').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeMobile();
+                resetWizard();
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => document.getElementById('circleName').focus(), 400);
+            });
+        });
+
+        // Close wizard
+        function closeWizard() {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        closeBtn.addEventListener('click', closeWizard);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeWizard();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) closeWizard();
+        });
+
+        // Reset
+        function resetWizard() {
+            currentStep = 1;
+            circleData = { name: '', amount: 0, members: 5 };
+            selectedContacts = [];
+            document.getElementById('circleName').value = '';
+            document.getElementById('customAmount').value = '';
+            document.getElementById('contactsSearch').value = '';
+            document.getElementById('manualAddForm').style.display = 'none';
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            updateMembersDisplay();
+            // Reset invite counter
+            const counter = document.getElementById('inviteCounter');
+            if (counter) {
+                counter.classList.remove('has-invites');
+                document.getElementById('inviteCount').textContent = '٠';
+                counter.querySelector('.counter-pending-label').textContent = 'ادعُ شخصاً واحداً على الأقل';
+            }
+            goToStep(1);
+        }
+
+        // Navigation
+        backBtn.addEventListener('click', () => {
+            if (currentStep > 1 && currentStep <= LAST_INPUT_STEP) goToStep(currentStep - 1);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep === LAST_INPUT_STEP) {
+                goToStep(SUCCESS_STEP);
+                launchConfetti();
+            } else if (currentStep < LAST_INPUT_STEP) {
+                saveStepData();
+                goToStep(currentStep + 1);
+            }
+        });
+
+        function goToStep(step) {
+            currentStep = step;
+
+            steps.forEach(s => s.classList.remove('active'));
+            const target = document.querySelector(`.wizard-step[data-step="${step}"]`);
+            if (target) target.classList.add('active');
+
+            // Progress dots
+            dots.forEach(dot => {
+                const ds = parseInt(dot.dataset.step);
+                dot.classList.remove('active', 'done');
+                if (ds === step && step <= LAST_INPUT_STEP) dot.classList.add('active');
+                else if (ds < step) dot.classList.add('done');
+            });
+
+            // Back button
+            backBtn.classList.toggle('hidden', step <= 1 || step === SUCCESS_STEP);
+
+            // Footer & button text
+            if (step === SUCCESS_STEP) {
+                wizardFooter.style.display = 'none';
+                document.querySelector('.wizard-progress').style.display = 'none';
+            } else {
+                wizardFooter.style.display = '';
+                document.querySelector('.wizard-progress').style.display = '';
+                nextBtn.textContent = step === LAST_INPUT_STEP ? '🎉 أنشئ السِلفة وأرسل الدعوات' : 'التالي';
+            }
+
+            // Step-specific logic
+            if (step === 2) updateMembersPreview();
+            if (step === 3) renderContacts();
+            if (step === SUCCESS_STEP) populatePendingList();
+
+            validateStep();
+        }
+
+        // Save data from current step
+        function saveStepData() {
+            if (currentStep === 1) {
+                circleData.name = document.getElementById('circleName').value.trim();
+                const custom = document.getElementById('customAmount').value;
+                if (custom && parseInt(custom) > 0) {
+                    circleData.amount = parseInt(custom);
+                }
+            }
+        }
+
+        // Validation
+        function validateStep() {
+            let valid = false;
+
+            if (currentStep === 1) {
+                // Step 1 needs both name and amount
+                const hasName = document.getElementById('circleName').value.trim().length >= 2;
+                const hasAmount = circleData.amount > 0;
+                valid = hasName && hasAmount;
+            } else if (currentStep === 2) {
+                valid = circleData.members >= 3 && circleData.members <= 20;
+            } else if (currentStep === LAST_INPUT_STEP) {
+                // Must send at least one invite
+                valid = selectedContacts.length > 0;
+            }
+
+            nextBtn.disabled = !valid;
+        }
+
+        // Step 1: Name input
+        document.getElementById('circleName').addEventListener('input', validateStep);
+
+        // Step 2: Amount presets
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                circleData.amount = parseInt(btn.dataset.amount);
+                document.getElementById('customAmount').value = '';
+                validateStep();
+            });
+        });
+
+        document.getElementById('customAmount').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            if (val && val > 0) {
+                circleData.amount = val;
+                document.querySelectorAll('.amount-btn').forEach(b => {
+                    if (parseInt(b.dataset.amount) === val) b.classList.add('selected');
+                });
+            } else {
+                circleData.amount = 0;
+            }
+            validateStep();
+        });
+
+        // Step 3: Members stepper
+        const membersCountEl = document.getElementById('membersCount');
+        const minusBtn = document.getElementById('membersMinus');
+        const plusBtn = document.getElementById('membersPlus');
+
+        minusBtn.addEventListener('click', () => {
+            if (circleData.members > 3) {
+                circleData.members--;
+                updateMembersDisplay();
+                updateMembersPreview();
+                validateStep();
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            if (circleData.members < 20) {
+                circleData.members++;
+                updateMembersDisplay();
+                updateMembersPreview();
+                validateStep();
+            }
+        });
+
+        function updateMembersDisplay() {
+            membersCountEl.textContent = toAr(circleData.members);
+            minusBtn.disabled = circleData.members <= 3;
+            plusBtn.disabled = circleData.members >= 20;
+        }
+
+        function updateMembersPreview() {
+            const monthly = circleData.amount;
+            const payout = monthly * circleData.members;
+            document.getElementById('previewMonthly').textContent = formatAr(monthly) + ' د.ع';
+            document.getElementById('previewPayout').textContent = formatAr(payout) + ' د.ع';
+            document.getElementById('previewDuration').textContent = toAr(circleData.members) + ' أشهر';
+        }
+
+        // ── Step 3: Invite contacts (request flow) ──
+        function renderContacts() {
+            const list = document.getElementById('contactsList');
+            const allContacts = [...sampleContacts];
+
+            list.innerHTML = allContacts.map(c => {
+                const isInvited = selectedContacts.some(sc => sc.id === c.id);
+                return `
+                    <div class="contact-item ${isInvited ? 'invited' : ''}"
+                         data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-color="${c.color}">
+                        <div class="contact-avatar" style="background:${c.color};">${c.name.charAt(0)}</div>
+                        <div class="contact-info">
+                            <span class="contact-name">${c.name}</span>
+                            <span class="contact-phone">${c.phone}</span>
+                        </div>
+                        <button class="invite-btn ${isInvited ? 'pending' : ''}" data-id="${c.id}" ${isInvited ? 'disabled' : ''}>
+                            ${isInvited ? '⏳ في الانتظار' : '📩 دعوة'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            // Attach invite button handlers
+            list.querySelectorAll('.invite-btn:not(.pending)').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    inviteContact(btn.dataset.id);
+                });
+            });
+
+            updateInviteCounter();
+            filterContacts();
+        }
+
+        function inviteContact(id) {
+            // Find contact data (from sample or manual)
+            const allContacts = [...sampleContacts, ...selectedContacts.filter(c => c.id.startsWith('m'))];
+            const contact = sampleContacts.find(c => c.id === id)
+                || selectedContacts.find(c => c.id === id);
+            if (!contact || selectedContacts.some(c => c.id === id)) return;
+
+            selectedContacts.push({ id: contact.id, name: contact.name, phone: contact.phone, color: contact.color });
+
+            // Animate and flip button to pending
+            const btn = document.querySelector(`.invite-btn[data-id="${id}"]`);
+            const row = document.querySelector(`.contact-item[data-id="${id}"]`);
+            if (btn) {
+                btn.classList.add('sending');
+                setTimeout(() => {
+                    btn.classList.remove('sending');
+                    btn.classList.add('pending');
+                    btn.textContent = '⏳ في الانتظار';
+                    btn.disabled = true;
+                }, 280);
+            }
+            if (row) row.classList.add('invited');
+
+            updateInviteCounter();
+            validateStep();
+        }
+
+        function updateInviteCounter() {
+            const counter = document.getElementById('inviteCounter');
+            const countEl = document.getElementById('inviteCount');
+            const pendingLabel = counter.querySelector('.counter-pending-label');
+            const n = selectedContacts.length;
+
+            countEl.textContent = toAr(n);
+
+            if (n > 0) {
+                counter.classList.add('has-invites');
+                pendingLabel.textContent = '⏳ في انتظار الموافقة';
+            } else {
+                counter.classList.remove('has-invites');
+                pendingLabel.textContent = 'ادعُ شخصاً واحداً على الأقل';
+            }
+        }
+
+        // Populate pending list on success screen
+        function populatePendingList() {
+            const list = document.getElementById('pendingMembersList');
+            if (!list) return;
+            if (selectedContacts.length === 0) {
+                list.innerHTML = '<div style="font-size:13px;color:var(--text-light);text-align:center;padding:12px 0;">لم يُرسَل أي دعوات بعد</div>';
+                return;
+            }
+            list.innerHTML = selectedContacts.map((c, i) => `
+                <div class="pending-member-row" style="animation: slideInItem 0.35s ease ${i * 0.08}s both;">
+                    <div class="pending-member-avatar" style="background:${c.color};">${c.name.charAt(0)}</div>
+                    <span class="pending-member-name">${c.name}</span>
+                    <span class="pending-status-badge">⏳ في الانتظار</span>
+                </div>
+            `).join('');
+        }
+
+        // Search contacts
+        document.getElementById('contactsSearch').addEventListener('input', filterContacts);
+
+        function filterContacts() {
+            const query = document.getElementById('contactsSearch').value.trim().toLowerCase();
+            let visibleCount = 0;
+            document.querySelectorAll('.contact-item').forEach(item => {
+                const name = item.dataset.name.toLowerCase();
+                const phone = item.dataset.phone;
+                const match = !query || name.includes(query) || phone.includes(query);
+                item.classList.toggle('contact-item-hidden', !match);
+                if (match) visibleCount++;
+            });
+            const noRes = document.getElementById('noResults');
+            if (noRes) noRes.style.display = (query && visibleCount === 0) ? 'block' : 'none';
+        }
+
+        // Manual add
+        document.getElementById('addManualBtn').addEventListener('click', () => {
+            const form = document.getElementById('manualAddForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            if (form.style.display === 'block') {
+                document.getElementById('manualName').focus();
+            }
+        });
+
+        document.getElementById('manualAddConfirm').addEventListener('click', addManualContact);
+        document.getElementById('manualPhone').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addManualContact();
+        });
+
+        function addManualContact() {
+            const nameInput = document.getElementById('manualName');
+            const phoneInput = document.getElementById('manualPhone');
+            const name = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+
+            if (!name) return;
+
+            const colors = ['#7C3AED','#DC2626','#2563EB','#D97706','#059669','#4F46E5','#BE185D','#0369A1','#9333EA'];
+            const color = colors[manualIdCounter % colors.length];
+            const id = 'm' + (manualIdCounter++);
+
+            // Add as already-invited (manual contacts are treated as sent immediately)
+            selectedContacts.push({ id, name, phone: phone || '—', color });
+            updateInviteCounter();
+            validateStep();
+
+            // Add a row to the contact list visually
+            const list = document.getElementById('contactsList');
+            const row = document.createElement('div');
+            row.className = 'contact-item invited';
+            row.dataset.id = id;
+            row.dataset.name = name;
+            row.dataset.phone = phone || '';
+            row.dataset.color = color;
+            row.innerHTML = `
+                <div class="contact-avatar" style="background:${color};">${name.charAt(0)}</div>
+                <div class="contact-info">
+                    <span class="contact-name">${name}</span>
+                    <span class="contact-phone">${phone || '—'}</span>
+                </div>
+                <button class="invite-btn pending" disabled>⏳ في الانتظار</button>
+            `;
+            list.prepend(row);
+
+            nameInput.value = '';
+            phoneInput.value = '';
+            nameInput.focus();
+        }
+
+        // Step 5: Review
+        function populateReview() {
+            const payout = circleData.amount * circleData.members;
+            document.getElementById('reviewName').textContent = circleData.name;
+            document.getElementById('reviewAmount').textContent = formatAr(circleData.amount) + ' د.ع';
+            document.getElementById('reviewMembers').textContent = toAr(circleData.members) + ' أعضاء';
+            document.getElementById('reviewDuration').textContent = toAr(circleData.members) + ' أشهر';
+            document.getElementById('reviewPayout').textContent = formatAr(payout) + ' د.ع';
+        }
+
+        // Copy invite link
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const linkInput = document.getElementById('inviteLink');
+            linkInput.select();
+            document.execCommand('copy');
+            this.textContent = 'تم النسخ!';
+            this.classList.add('copied');
+            setTimeout(() => {
+                this.textContent = 'نسخ الرابط';
+                this.classList.remove('copied');
+            }, 2000);
+        });
+
+        // Confetti
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const colors = ['#0D9488', '#F5C542', '#1B365D', '#14b8a6', '#fbd872', '#22c55e'];
+            const particles = [];
+
+            for (let i = 0; i < 120; i++) {
+                particles.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 16,
+                    vy: (Math.random() - 1) * 18 - 4,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 6 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 12,
+                    gravity: 0.3 + Math.random() * 0.2,
+                    opacity: 1
+                });
+            }
+
+            let frame = 0;
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.vy += p.gravity;
+                    p.y += p.vy;
+                    p.rotation += p.rotSpeed;
+                    p.vx *= 0.98;
+
+                    if (frame > 60) p.opacity -= 0.015;
+                    if (p.opacity <= 0) return;
+
+                    alive = true;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = Math.max(0, p.opacity);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+
+                frame++;
+                if (alive && frame < 200) {
+                    requestAnimationFrame(draw);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+
+    </script>
+</body>
+</html>
