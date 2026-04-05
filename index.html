@@ -7,6 +7,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy:  { DEFAULT: '#1B365D', light: '#243f6c' },
+                        teal:  { DEFAULT: '#0D9488', dark: '#0b7f74', light: '#14b8a6' },
+                        gold:  { DEFAULT: '#F5C542', light: '#fbd872' },
+                    },
+                    fontFamily: { arabic: ['Noto Sans Arabic', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -1495,21 +1510,14 @@
                 justify-content: center;
             }
         }
-        /* ───────── WIZARD MODAL ───────── */
+        /* ───────── WIZARD FULL-SCREEN ───────── */
         .wizard-overlay {
             position: fixed;
             inset: 0;
             z-index: 200;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.35s ease;
-            padding: 20px;
+            transition: opacity 0.25s ease;
         }
 
         .wizard-overlay.active {
@@ -1517,35 +1525,34 @@
             pointer-events: all;
         }
 
-        .wizard {
-            background: var(--white);
-            border-radius: 24px;
+        .wizard-fs {
             width: 100%;
-            max-width: 520px;
-            max-height: 90vh;
-            overflow: hidden;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.2);
-            transform: translateY(30px) scale(0.96);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+            background: var(--white);
             display: flex;
             flex-direction: column;
+            transform: translateY(60px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .wizard-overlay.active .wizard {
-            transform: translateY(0) scale(1);
+        .wizard-overlay.active .wizard-fs {
+            transform: translateY(0);
         }
 
-        /* Wizard Header */
-        .wizard-header {
-            padding: 24px 28px 0;
+        /* ── Top bar ── */
+        .wizard-topbar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            padding: 14px 16px 12px;
+            border-bottom: 1px solid var(--border);
+            gap: 8px;
+            flex-shrink: 0;
+            background: var(--white);
         }
 
         .wizard-back {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
             background: var(--light-bg);
@@ -1555,20 +1562,15 @@
             justify-content: center;
             transition: all 0.2s;
             color: var(--text-light);
+            flex-shrink: 0;
         }
 
-        .wizard-back:hover {
-            background: var(--border);
-            color: var(--navy);
-        }
-
-        .wizard-back.hidden {
-            visibility: hidden;
-        }
+        .wizard-back:hover { background: var(--border); color: var(--navy); }
+        .wizard-back.hidden { visibility: hidden; pointer-events: none; }
 
         .wizard-close {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
             background: var(--light-bg);
@@ -1578,85 +1580,123 @@
             justify-content: center;
             transition: all 0.2s;
             color: var(--text-light);
-            font-size: 18px;
+            font-size: 16px;
+            flex-shrink: 0;
         }
 
-        .wizard-close:hover {
-            background: #FEE2E2;
-            color: #DC2626;
+        .wizard-close:hover { background: #FEE2E2; color: #DC2626; }
+
+        /* ── Steps track ── */
+        .wizard-steps-track {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            overflow: hidden;
+            padding: 0 4px;
         }
 
-        /* Progress Dots */
-        .wizard-progress {
+        .wstep {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .wstep-dot {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 20px 28px 0;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            background: var(--white);
+            transition: all 0.3s;
         }
 
-        .progress-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+        .wstep.active .wstep-dot {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--white);
+            box-shadow: 0 0 0 4px rgba(13,148,136,0.12);
+        }
+
+        .wstep.done .wstep-dot {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--white);
+        }
+
+        .wstep-label {
+            font-size: 9px;
+            color: var(--text-light);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .wstep.active .wstep-label { color: var(--teal); font-weight: 700; }
+        .wstep.done .wstep-label   { color: var(--teal); }
+
+        .wstep-line {
+            flex: 1;
+            height: 2px;
             background: var(--border);
-            transition: all 0.4s ease;
+            min-width: 12px;
+            max-width: 40px;
+            margin-bottom: 18px;
+            transition: background 0.3s;
         }
 
-        .progress-dot.active {
-            background: var(--teal);
-            width: 28px;
-            border-radius: 5px;
-        }
+        .wstep-line.done { background: var(--teal); }
 
-        .progress-dot.done {
-            background: var(--teal);
-        }
-
-        /* Wizard Body */
+        /* ── Wizard Body ── */
         .wizard-body {
-            padding: 28px;
             flex: 1;
             overflow-y: auto;
-            position: relative;
+            padding: 28px 24px 24px;
+            max-width: 580px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
         }
 
         .wizard-step {
             display: none;
-            animation: wizardFadeIn 0.4s ease;
+            animation: wizardFadeIn 0.35s ease;
         }
 
-        .wizard-step.active {
-            display: block;
-        }
+        .wizard-step.active { display: block; }
 
         @keyframes wizardFadeIn {
-            from { opacity: 0; transform: translateX(-16px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .wizard-step-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--navy);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .wizard-step-desc {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-light);
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             line-height: 1.6;
         }
 
-        /* Input styles */
-        .wizard-input-group {
-            margin-bottom: 20px;
-        }
-
+        /* ── Inputs ── */
+        .wizard-input-group { margin-bottom: 18px; }
         .wizard-input-group label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--navy);
             margin-bottom: 8px;
@@ -1664,11 +1704,11 @@
 
         .wizard-input {
             width: 100%;
-            padding: 16px 20px;
+            padding: 14px 18px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             font-family: inherit;
-            font-size: 17px;
+            font-size: 16px;
             color: var(--text);
             background: var(--light-bg);
             transition: all 0.25s;
@@ -1681,26 +1721,23 @@
             box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
         }
 
-        .wizard-input::placeholder {
-            color: var(--text-light);
-            opacity: 0.6;
-        }
+        .wizard-input::placeholder { color: var(--text-light); opacity: 0.6; }
 
-        /* Amount preset buttons */
+        /* ── Amount presets ── */
         .amount-presets {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
         .amount-btn {
-            padding: 18px 16px;
+            padding: 16px 12px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--white);
             font-family: inherit;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--navy);
             cursor: pointer;
@@ -1710,16 +1747,13 @@
 
         .amount-btn span {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: var(--text-light);
             margin-top: 2px;
         }
 
-        .amount-btn:hover {
-            border-color: var(--teal);
-            background: rgba(13, 148, 136, 0.03);
-        }
+        .amount-btn:hover { border-color: var(--teal); background: rgba(13,148,136,0.03); }
 
         .amount-btn.selected {
             border-color: var(--teal);
@@ -1731,13 +1765,12 @@
         .amount-divider {
             text-align: center;
             color: var(--text-light);
-            font-size: 13px;
-            margin: 16px 0;
+            font-size: 12px;
+            margin: 14px 0;
             position: relative;
         }
 
-        .amount-divider::before,
-        .amount-divider::after {
+        .amount-divider::before, .amount-divider::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -1747,20 +1780,20 @@
         }
 
         .amount-divider::before { right: 0; }
-        .amount-divider::after { left: 0; }
+        .amount-divider::after  { left: 0; }
 
-        /* Members stepper */
+        /* ── Members stepper ── */
         .members-stepper {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 24px;
-            margin: 20px 0 28px;
+            margin: 16px 0 24px;
         }
 
         .stepper-btn {
-            width: 56px;
-            height: 56px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             border: 2px solid var(--border);
             background: var(--white);
@@ -1774,496 +1807,164 @@
             justify-content: center;
         }
 
-        .stepper-btn:hover {
-            border-color: var(--teal);
-            background: rgba(13, 148, 136, 0.04);
-        }
+        .stepper-btn:hover { border-color: var(--teal); background: rgba(13,148,136,0.04); }
+        .stepper-btn:active { transform: scale(0.93); }
+        .stepper-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        .stepper-btn:active {
-            transform: scale(0.93);
-        }
-
-        .stepper-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .stepper-value {
-            text-align: center;
-            min-width: 80px;
-        }
-
+        .stepper-value { text-align: center; min-width: 80px; }
         .stepper-value .number {
-            font-size: 48px;
+            font-size: 44px;
             font-weight: 800;
             color: var(--navy);
             line-height: 1;
         }
 
-        .stepper-value .unit {
-            font-size: 14px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
+        .stepper-value .unit { font-size: 13px; color: var(--text-light); font-weight: 500; }
 
-        /* Live preview card */
+        /* ── Live preview ── */
         .live-preview {
             background: linear-gradient(135deg, rgba(13,148,136,0.06), rgba(245,197,66,0.06));
             border: 1px solid rgba(13, 148, 136, 0.15);
             border-radius: var(--radius-sm);
-            padding: 18px 20px;
-            margin-top: 8px;
+            padding: 16px 18px;
         }
 
         .live-preview-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
+            padding: 5px 0;
         }
 
-        .live-preview-row:not(:last-child) {
-            border-bottom: 1px solid rgba(13, 148, 136, 0.08);
-        }
+        .live-preview-row:not(:last-child) { border-bottom: 1px solid rgba(13,148,136,0.08); }
+        .live-preview-label  { font-size: 13px; color: var(--text-light); }
+        .live-preview-value  { font-size: 14px; font-weight: 700; color: var(--navy); }
+        .live-preview-value.highlight { color: var(--teal); font-size: 16px; }
 
-        .live-preview-label {
+        /* ── Selection counter pill ── */
+        .selection-counter-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(13,148,136,0.06);
+            border: 1.5px solid rgba(13,148,136,0.2);
+            border-radius: 50px;
+            padding: 8px 16px;
+            margin-bottom: 14px;
             font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .live-preview-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--navy);
-        }
-
-        .live-preview-value.highlight {
-            color: var(--teal);
-            font-size: 17px;
-        }
-
-        /* Review card (step 4) */
-        .review-card {
-            background: var(--light-bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .review-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-        }
-
-        .review-row:not(:last-child) {
-            border-bottom: 1px solid var(--border);
-        }
-
-        .review-row .label {
-            font-size: 14px;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .review-row .label svg {
-            width: 18px;
-            height: 18px;
-            opacity: 0.5;
-        }
-
-        .review-row .value {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--navy);
-        }
-
-        .review-highlight {
-            background: linear-gradient(135deg, var(--teal), var(--teal-light));
-            border-radius: var(--radius-sm);
-            padding: 20px;
-            text-align: center;
-            color: var(--white);
-            margin-bottom: 20px;
-        }
-
-        .review-highlight .big {
-            font-size: 32px;
-            font-weight: 800;
-            display: block;
-        }
-
-        .review-highlight .sub {
-            font-size: 13px;
-            opacity: 0.85;
-        }
-
-        /* Wizard footer / next button */
-        .wizard-footer {
-            padding: 0 28px 12px;
-        }
-
-        .wizard-trust-nudge {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 12px;
-        }
-
-        .wizard-bottom-trust {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-light);
-            padding: 0 28px 20px;
-            margin: 0;
-        }
-
-        .wizard-next {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: var(--radius-sm);
-            background: var(--teal);
-            color: var(--white);
-            font-family: inherit;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s;
-        }
-
-        .wizard-next:hover {
-            background: var(--teal-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
-        }
-
-        .wizard-next:active {
-            transform: translateY(0);
-        }
-
-        .wizard-next:disabled {
-            background: var(--border);
-            color: var(--text-light);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Success state */
-        .wizard-success {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .success-icon {
-            width: 88px;
-            height: 88px;
-            border-radius: 50%;
-            background: rgba(13, 148, 136, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes successPop {
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.15); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .success-icon svg {
-            width: 40px;
-            height: 40px;
-            color: var(--teal);
-        }
-
-        .wizard-success h2 {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-
-        .wizard-success p {
-            font-size: 15px;
-            color: var(--text-light);
-            margin-bottom: 28px;
-            line-height: 1.7;
-        }
-
-        .invite-link-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--light-bg);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 6px 6px 6px 16px;
-            margin-bottom: 16px;
-        }
-
-        .invite-link-box input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-size: 14px;
-            color: var(--text);
-            outline: none;
-            min-width: 0;
-            direction: ltr;
-            text-align: left;
-        }
-
-        .copy-btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: var(--radius-xs);
-            background: var(--navy);
-            color: var(--white);
-            font-family: inherit;
-            font-size: 13px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
+            transition: all 0.3s;
         }
 
-        .copy-btn:hover {
-            background: var(--navy-light);
+        .selection-counter-pill.full {
+            background: rgba(245,197,66,0.1);
+            border-color: rgba(245,197,66,0.4);
         }
 
-        .copy-btn.copied {
-            background: var(--teal);
-        }
-
-        .share-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 16px;
-        }
-
-        .share-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            background: var(--white);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            color: var(--text-light);
-        }
-
-        .share-btn:hover {
-            border-color: var(--teal);
+        .sc-selected {
+            font-size: 20px;
+            font-weight: 800;
             color: var(--teal);
-            transform: translateY(-2px);
+            min-width: 20px;
+            text-align: center;
+            transition: all 0.3s;
         }
 
-        .share-btn svg {
-            width: 22px;
-            height: 22px;
+        .selection-counter-pill.full .sc-selected { color: #D97706; }
+        .sc-sep   { color: var(--border); font-weight: 400; }
+        .sc-total { font-size: 16px; font-weight: 700; color: var(--navy); }
+        .sc-label { font-size: 12px; color: var(--text-light); font-weight: 500; }
+
+        .sc-progress {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-right: 4px;
         }
 
-        /* Confetti canvas */
-        .confetti-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            pointer-events: none;
+        .sc-progress-fill {
+            height: 100%;
+            background: var(--teal);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.3s ease;
         }
 
-        /* ───────── CONTACTS STEP ───────── */
+        .selection-counter-pill.full .sc-progress-fill { background: #D97706; }
+
+        /* ── Contacts ── */
         .contacts-search-box {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .contacts-search-icon {
             position: absolute;
-            right: 16px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             color: var(--text-light);
             pointer-events: none;
         }
 
-        .contacts-search {
-            padding-right: 44px !important;
-        }
-
-        .selected-members {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-            min-height: 40px;
-        }
-
-        .selected-member {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(13, 148, 136, 0.08);
-            border: 1px solid rgba(13, 148, 136, 0.2);
-            border-radius: 50px;
-            padding: 5px 12px 5px 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--teal-dark);
-            animation: chipPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes chipPop {
-            0% { transform: scale(0.7); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .selected-member.you-badge {
-            background: rgba(27, 54, 93, 0.06);
-            border-color: rgba(27, 54, 93, 0.15);
-            color: var(--navy);
-        }
-
-        .selected-avatar {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--white);
-            flex-shrink: 0;
-        }
-
-        .selected-name {
-            white-space: nowrap;
-        }
-
-        .selected-remove {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(13, 148, 136, 0.15);
-            color: var(--teal-dark);
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: -4px;
-            margin-left: 2px;
-            transition: all 0.15s;
-            line-height: 1;
-        }
-
-        .selected-remove:hover {
-            background: #FEE2E2;
-            color: #DC2626;
-        }
-
-        .contacts-counter {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 14px;
-            font-weight: 500;
-        }
+        .contacts-search { padding-right: 42px !important; }
 
         .contacts-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            max-height: 240px;
+            gap: 3px;
+            max-height: 300px;
             overflow-y: auto;
-            margin-bottom: 16px;
-            padding-left: 4px;
+            margin-bottom: 12px;
         }
 
-        .contacts-list::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .contacts-list::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
+        .contacts-list::-webkit-scrollbar { width: 4px; }
+        .contacts-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
         .contact-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 12px 14px;
+            padding: 11px 12px;
             border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
         }
 
-        .contact-item:hover {
-            background: var(--light-bg);
-        }
+        .contact-item:hover { background: var(--light-bg); }
 
         .contact-item.selected {
-            background: rgba(13, 148, 136, 0.04);
+            background: rgba(13,148,136,0.04);
             border-color: var(--teal);
         }
 
-        .contact-item.disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
+        .contact-item.disabled { opacity: 0.4; pointer-events: none; }
 
         .contact-avatar {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--white);
             flex-shrink: 0;
         }
 
-        .contact-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .contact-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--navy);
-            display: block;
-        }
-
-        .contact-phone {
-            font-size: 12px;
-            color: var(--text-light);
-            direction: ltr;
-            text-align: right;
-        }
+        .contact-info { flex: 1; min-width: 0; }
+        .contact-name  { font-size: 14px; font-weight: 600; color: var(--navy); display: block; }
+        .contact-phone { font-size: 11px; color: var(--text-light); direction: ltr; text-align: right; }
 
         .contact-check {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             border: 2px solid var(--border);
             display: flex;
@@ -2279,314 +1980,362 @@
             color: white;
         }
 
-        .contact-check svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0;
-            transition: opacity 0.15s;
-        }
-
-        .contact-item.selected .contact-check svg {
-            opacity: 1;
-        }
-
-        .contact-item-hidden {
-            display: none !important;
-        }
+        .contact-check svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.15s; }
+        .contact-item.selected .contact-check svg { opacity: 1; }
+        .contact-item-hidden { display: none !important; }
 
         .no-results {
             text-align: center;
-            padding: 24px;
+            padding: 20px;
             color: var(--text-light);
-            font-size: 14px;
+            font-size: 13px;
             display: none;
         }
 
-        /* ── Invite Request Flow ── */
-        .invite-btn {
-            padding: 6px 14px;
-            border: 1.5px solid var(--teal);
-            border-radius: 50px;
+        /* ── Manual add ── */
+        .add-manual-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
             background: transparent;
-            color: var(--teal);
             font-family: inherit;
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            margin-top: 4px;
+        }
+
+        .add-manual-btn svg { width: 18px; height: 18px; }
+        .add-manual-btn:hover { border-color: var(--teal); color: var(--teal); background: rgba(13,148,136,0.02); }
+
+        .manual-add-form { margin-top: 10px; }
+        .manual-add-row  { display: flex; gap: 8px; align-items: center; }
+
+        .manual-input { padding: 11px 12px !important; font-size: 13px !important; flex: 1; min-width: 0; }
+
+        .manual-add-confirm {
+            padding: 11px 16px;
+            border: none;
+            border-radius: var(--radius-xs);
+            background: var(--teal);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
             flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .invite-btn:hover {
-            background: rgba(13, 148, 136, 0.08);
-            transform: scale(1.03);
-        }
+        .manual-add-confirm:hover { background: var(--teal-dark); }
 
-        .invite-btn.pending {
-            border-color: var(--gold);
-            color: #92400e;
-            background: rgba(245, 197, 66, 0.12);
-            cursor: default;
-            transform: none !important;
-        }
-
-        @keyframes sendPop {
-            0%   { transform: scale(1); }
-            40%  { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .invite-btn.sending { animation: sendPop 0.28s ease; }
-
-        .contact-item.invited {
-            background: rgba(245, 197, 66, 0.04) !important;
-            border-color: rgba(245, 197, 66, 0.2) !important;
-        }
-
-        /* Invite counter bar */
-        .invite-counter {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
+        /* ── Cycle Planning Step ── */
+        .shuffle-btn {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--light-bg);
-            border: 1px solid var(--border);
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: var(--text-light);
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .invite-counter.has-invites {
-            background: rgba(245, 197, 66, 0.07);
-            border-color: rgba(245, 197, 66, 0.3);
-            color: var(--navy);
-        }
-
-        .invite-counter .counter-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .counter-num {
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--teal);
-            min-width: 18px;
-        }
-
-        .invite-counter.has-invites .counter-num { color: #92400e; }
-
-        .counter-pending-label {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .invite-counter.has-invites .counter-pending-label { color: #92400e; }
-
-        /* Pending list in success screen */
-        .pending-members-section {
-            width: 100%;
-            margin: 12px 0 6px;
-            text-align: right;
-        }
-
-        .pending-members-label {
-            font-size: 12px;
+            font-family: inherit;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .pending-members-list {
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            max-height: 160px;
-            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-bottom: 16px;
         }
 
-        .pending-member-row {
+        .shuffle-btn:hover { border-color: var(--teal); color: var(--teal); background: rgba(13,148,136,0.04); }
+
+        .cycle-list { display: flex; flex-direction: column; gap: 6px; }
+
+        .cycle-row {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 9px 12px;
+            padding: 12px 14px;
             border-radius: var(--radius-sm);
-            background: rgba(245, 197, 66, 0.06);
-            border: 1px solid rgba(245, 197, 66, 0.18);
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            cursor: grab;
+            transition: all 0.2s;
+            animation: wizardFadeIn 0.35s ease;
+            user-select: none;
         }
 
-        .pending-member-avatar {
-            width: 32px;
-            height: 32px;
+        .cycle-row:active { cursor: grabbing; }
+        .cycle-row:hover  { border-color: rgba(13,148,136,0.3); box-shadow: 0 2px 8px rgba(27,54,93,0.06); }
+
+        .cycle-row.you-row {
+            background: rgba(245,197,66,0.06);
+            border-color: rgba(245,197,66,0.4);
+        }
+
+        .cycle-row.dragging  { opacity: 0.45; border-style: dashed; }
+        .cycle-row.drag-over { border-color: var(--teal); background: rgba(13,148,136,0.04); }
+
+        .cycle-drag {
+            color: var(--border);
+            font-size: 14px;
+            line-height: 1;
+            padding: 2px;
+            transition: color 0.2s;
+            cursor: grab;
+        }
+
+        .cycle-row:hover .cycle-drag { color: var(--text-light); }
+
+        .cycle-turn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            border: 1.5px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .cycle-row.you-row .cycle-turn {
+            background: rgba(245,197,66,0.2);
+            border-color: var(--gold);
+            color: #92400e;
+        }
+
+        .cycle-avatar {
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 13px;
             font-weight: 700;
-            color: white;
+            color: var(--white);
             flex-shrink: 0;
         }
 
-        .pending-member-name {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--navy);
+        .cycle-info { flex: 1; min-width: 0; }
+        .cycle-name  { display: block; font-size: 14px; font-weight: 600; color: var(--navy); }
+        .cycle-month { display: block; font-size: 11px; color: var(--text-light); }
+
+        .cycle-amount {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--teal);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .pending-status-badge {
-            font-size: 11px;
+        .cycle-row.you-row .cycle-amount { color: #92400e; }
+
+        /* ── Bottom nav ── */
+        .wizard-bottom-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px 14px;
+            border-top: 1px solid var(--border);
+            background: var(--white);
+            flex-shrink: 0;
+            gap: 12px;
+        }
+
+        .wbnav-home {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 9px;
+            font-family: inherit;
             font-weight: 600;
-            color: #92400e;
-            background: rgba(245, 197, 66, 0.2);
-            padding: 3px 9px;
-            border-radius: 50px;
+            padding: 6px 10px;
+            border-radius: var(--radius-xs);
+            transition: all 0.2s;
+            min-width: 56px;
+        }
+
+        .wbnav-home:hover { color: var(--navy); background: var(--light-bg); }
+        .wbnav-home svg   { width: 20px; height: 20px; margin-bottom: 1px; }
+
+        .wizard-next {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--teal);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-align: center;
+        }
+
+        .wizard-next:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 16px rgba(13,148,136,0.3);
+        }
+
+        .wizard-next:active { transform: translateY(0); }
+
+        .wizard-next:disabled {
+            background: var(--border);
+            color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ── Success ── */
+        .wizard-success { text-align: center; padding: 16px 0; }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(13,148,136,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: successPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes successPop {
+            0%   { transform: scale(0); opacity: 0; }
+            60%  { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon svg { width: 36px; height: 36px; color: var(--teal); }
+        .wizard-success h2 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .wizard-success p  { font-size: 14px; color: var(--text-light); margin-bottom: 20px; line-height: 1.7; }
+
+        .invite-link-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--light-bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 6px 6px 14px;
+            margin-bottom: 14px;
+        }
+
+        .invite-link-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+            min-width: 0;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .copy-btn {
+            padding: 9px 16px;
+            border: none;
+            border-radius: var(--radius-xs);
+            background: var(--navy);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
             white-space: nowrap;
         }
+
+        .copy-btn:hover { background: var(--navy-light); }
+        .copy-btn.copied { background: var(--teal); }
+
+        .share-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 14px; }
+
+        .share-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            color: var(--text-light);
+        }
+
+        .share-btn:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+        .share-btn svg { width: 20px; height: 20px; }
+
+        .confetti-canvas { position: fixed; inset: 0; z-index: 300; pointer-events: none; }
+
+        .pending-members-section { width: 100%; margin: 10px 0 4px; text-align: right; }
+        .pending-members-label   { font-size: 11px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .pending-members-list    { display: flex; flex-direction: column; gap: 5px; max-height: 160px; overflow-y: auto; }
+
+        .pending-member-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            background: rgba(245,197,66,0.06);
+            border: 1px solid rgba(245,197,66,0.18);
+        }
+
+        .pending-member-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; flex-shrink: 0; }
+        .pending-member-name   { flex: 1; font-size: 13px; font-weight: 600; color: var(--navy); }
+        .pending-status-badge  { font-size: 10px; font-weight: 600; color: #92400e; background: rgba(245,197,66,0.2); padding: 2px 8px; border-radius: 50px; white-space: nowrap; }
 
         .invite-alt-divider {
             display: flex;
             align-items: center;
             gap: 10px;
             color: var(--text-light);
-            font-size: 12px;
-            margin: 14px 0 10px;
+            font-size: 11px;
+            margin: 12px 0 8px;
             width: 100%;
         }
 
-        .invite-alt-divider::before,
-        .invite-alt-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .success-notify-nudge {
-            font-size: 13px;
-            color: var(--text-light);
-            text-align: center;
-            margin: 8px 0 0;
-            width: 100%;
-        }
-
-        .add-manual-btn {
-            width: 100%;
-            padding: 14px;
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-sm);
-            background: transparent;
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .add-manual-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .add-manual-btn:hover {
-            border-color: var(--teal);
-            color: var(--teal);
-            background: rgba(13, 148, 136, 0.03);
-        }
-
-        .manual-add-form {
-            margin-top: 12px;
-        }
-
-        .manual-add-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .manual-input {
-            padding: 12px 14px !important;
-            font-size: 14px !important;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .manual-add-confirm {
-            padding: 12px 20px;
-            border: none;
-            border-radius: var(--radius-xs);
-            background: var(--teal);
-            color: var(--white);
-            font-family: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .manual-add-confirm:hover {
-            background: var(--teal-dark);
-        }
+        .invite-alt-divider::before, .invite-alt-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .success-notify-nudge { font-size: 12px; color: var(--text-light); text-align: center; margin: 6px 0 0; }
 
         @media (max-width: 768px) {
-            .manual-add-row {
-                flex-wrap: wrap;
-            }
-
-            .manual-input {
-                flex: 1 1 calc(50% - 4px);
-            }
-
-            .manual-add-confirm {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .wizard {
-                max-width: 100%;
-                max-height: 100vh;
-                border-radius: 20px 20px 0 0;
-                margin-top: auto;
-            }
-
-            .wizard-overlay {
-                align-items: flex-end;
-                padding: 0;
-            }
-
-            .wizard-overlay.active .wizard {
-                transform: translateY(0);
-            }
-
-            .wizard-step-title {
-                font-size: 22px;
-            }
-
-            .amount-presets {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .stepper-value .number {
-                font-size: 40px;
-            }
+            .wizard-body    { padding: 20px 16px 16px; }
+            .wizard-topbar  { padding: 10px 12px; }
+            .wstep-label    { font-size: 8px; }
+            .wstep-line     { min-width: 8px; }
+            .wizard-step-title { font-size: 20px; }
+            .manual-add-row { flex-wrap: wrap; }
+            .manual-input   { flex: 1 1 calc(50% - 4px); }
+            .manual-add-confirm { width: 100%; }
         }
     </style>
 </head>
@@ -2878,25 +2627,51 @@
         </div>
     </section>
 
-    <!-- ═══════ WIZARD MODAL ═══════ -->
+    <!-- ═══════ WIZARD FULL-SCREEN ═══════ -->
     <div class="wizard-overlay" id="wizardOverlay">
-        <div class="wizard">
-            <div class="wizard-header">
+        <div class="wizard-fs">
+
+            <!-- TOP BAR -->
+            <div class="wizard-topbar">
                 <button class="wizard-back hidden" id="wizardBack" aria-label="رجوع">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                 </button>
+
+                <div class="wizard-steps-track">
+                    <div class="wstep active" data-step="1">
+                        <div class="wstep-dot"><span>١</span></div>
+                        <span class="wstep-label">تفاصيل</span>
+                    </div>
+                    <div class="wstep-line" data-line="1"></div>
+                    <div class="wstep" data-step="2">
+                        <div class="wstep-dot"><span>٢</span></div>
+                        <span class="wstep-label">الأعضاء</span>
+                    </div>
+                    <div class="wstep-line" data-line="2"></div>
+                    <div class="wstep" data-step="3">
+                        <div class="wstep-dot"><span>٣</span></div>
+                        <span class="wstep-label">الدعوات</span>
+                    </div>
+                    <div class="wstep-line" data-line="3"></div>
+                    <div class="wstep" data-step="4">
+                        <div class="wstep-dot"><span>٤</span></div>
+                        <span class="wstep-label">الجدول</span>
+                    </div>
+                    <div class="wstep-line" data-line="4"></div>
+                    <div class="wstep" data-step="5">
+                        <div class="wstep-dot">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
+                        <span class="wstep-label">تم</span>
+                    </div>
+                </div>
+
                 <button class="wizard-close" id="wizardClose" aria-label="إغلاق">✕</button>
             </div>
 
-            <div class="wizard-progress">
-                <div class="progress-dot active" data-step="1"></div>
-                <div class="progress-dot" data-step="2"></div>
-                <div class="progress-dot" data-step="3"></div>
-            </div>
-
+            <!-- SCROLLABLE BODY -->
             <div class="wizard-body">
 
-                <!-- ── Step 1: Name ── -->
                 <!-- ── Step 1: Name + Amount ── -->
                 <div class="wizard-step active" data-step="1">
                     <h2 class="wizard-step-title">🏦 أنشئ سِلفتك</h2>
@@ -2905,7 +2680,7 @@
                         <label for="circleName">اسم السِلفة</label>
                         <input type="text" class="wizard-input" id="circleName" placeholder="مثال: سِلفة العائلة" maxlength="40" autocomplete="off">
                     </div>
-                    <div class="wizard-input-group" style="margin-top:16px;">
+                    <div class="wizard-input-group" style="margin-top:14px;">
                         <label>الحصة الشهرية لكل عضو</label>
                         <div class="amount-presets">
                             <button class="amount-btn" data-amount="50000">٥٠,٠٠٠ <span>د.ع</span></button>
@@ -2914,9 +2689,9 @@
                             <button class="amount-btn" data-amount="200000">٢٠٠,٠٠٠ <span>د.ع</span></button>
                         </div>
                         <div class="amount-divider">أو أدخل مبلغاً مخصصاً</div>
-                        <input type="number" class="wizard-input" id="customAmount" placeholder="المبلغ بالدينار" min="50" max="50000" style="direction:ltr;text-align:right;">
+                        <input type="number" class="wizard-input" id="customAmount" placeholder="المبلغ بالدينار" min="50" style="direction:ltr;text-align:right;">
                     </div>
-                    <p class="wizard-trust-nudge">🔒 مجاني — لا رسوم، لا بطاقة</p>
+                    <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:16px;">🔒 مجاني — لا رسوم، لا بطاقة</p>
                 </div>
 
                 <!-- ── Step 2: Members ── -->
@@ -2933,14 +2708,14 @@
                         <button class="stepper-btn" id="membersPlus" aria-label="أكثر">+</button>
                     </div>
 
-                    <div class="live-preview" id="membersPreview">
+                    <div class="live-preview">
                         <div class="live-preview-row">
                             <span class="live-preview-label">كل عضو يدفع شهرياً</span>
-                            <span class="live-preview-value" id="previewMonthly">٥٠٠ د.ع</span>
+                            <span class="live-preview-value" id="previewMonthly">٥٠,٠٠٠ د.ع</span>
                         </div>
                         <div class="live-preview-row">
                             <span class="live-preview-label">كل عضو يستلم في دوره</span>
-                            <span class="live-preview-value highlight" id="previewPayout">٢,٥٠٠ د.ع</span>
+                            <span class="live-preview-value highlight" id="previewPayout">٢٥٠,٠٠٠ د.ع</span>
                         </div>
                         <div class="live-preview-row">
                             <span class="live-preview-label">مدة الحلقة</span>
@@ -2949,28 +2724,28 @@
                     </div>
                 </div>
 
-                <!-- ── Step 3: Invite Members (request flow) ── -->
+                <!-- ── Step 3: Select Members ── -->
                 <div class="wizard-step" data-step="3">
-                    <h2 class="wizard-step-title">📨 ادعُ الأعضاء</h2>
-                    <p class="wizard-step-desc">سيصل لكل شخص طلب للموافقة على الانضمام إلى سِلفتك.</p>
+                    <h2 class="wizard-step-title">📨 اختر الأعضاء</h2>
+                    <p class="wizard-step-desc">اضغط على الأشخاص الذين تريد دعوتهم للانضمام إلى سِلفتك.</p>
+
+                    <!-- Selection counter pill -->
+                    <div class="selection-counter-pill" id="selectionCounterPill">
+                        <span class="sc-selected" id="scSelected">٠</span>
+                        <span class="sc-sep">/</span>
+                        <span class="sc-total" id="scTotal">٤</span>
+                        <span class="sc-label">مختارين</span>
+                        <div class="sc-progress">
+                            <div class="sc-progress-fill" id="scProgressFill"></div>
+                        </div>
+                    </div>
 
                     <div class="contacts-search-box">
                         <svg class="contacts-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         <input type="text" class="wizard-input contacts-search" id="contactsSearch" placeholder="ابحث في جهات الاتصال...">
                     </div>
 
-                    <!-- Invite counter bar -->
-                    <div class="invite-counter" id="inviteCounter">
-                        <div class="counter-left">
-                            <span class="counter-num" id="inviteCount">٠</span>
-                            <span>دعوات مُرسَلة</span>
-                        </div>
-                        <span class="counter-pending-label">ادعُ شخصاً واحداً على الأقل</span>
-                    </div>
-
-                    <div class="contacts-list" id="contactsList">
-                        <!-- Populated by JS -->
-                    </div>
+                    <div class="contacts-list" id="contactsList"></div>
                     <div class="no-results" id="noResults" style="display:none;">لا توجد نتائج</div>
 
                     <button class="add-manual-btn" id="addManualBtn">
@@ -2987,8 +2762,21 @@
                     </div>
                 </div>
 
-                <!-- ── Step 4: Success ── -->
+                <!-- ── Step 4: Cycle Planning ── -->
                 <div class="wizard-step" data-step="4">
+                    <h2 class="wizard-step-title">📅 جدول الاستلام</h2>
+                    <p class="wizard-step-desc">رتّب ترتيب الاستلام — اسحب الصفوف لإعادة الترتيب أو اضغط خلط عشوائي.</p>
+
+                    <button class="shuffle-btn" id="shuffleBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+                        خلط عشوائي
+                    </button>
+
+                    <div class="cycle-list" id="cycleList"></div>
+                </div>
+
+                <!-- ── Step 5: Success ── -->
+                <div class="wizard-step" data-step="5">
                     <div class="wizard-success">
                         <div class="success-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -2996,15 +2784,12 @@
                         <h2>سِلفتك جاهزة!</h2>
                         <p>أُرسلت الدعوات — في انتظار موافقة الأعضاء.</p>
 
-                        <!-- Pending invites list -->
                         <div class="pending-members-section">
                             <div class="pending-members-label">الدعوات المُرسَلة</div>
-                            <div class="pending-members-list" id="pendingMembersList">
-                                <!-- Populated by JS -->
-                            </div>
+                            <div class="pending-members-list" id="pendingMembersList"></div>
                         </div>
 
-                        <p class="success-notify-nudge">🔔 سنُعلمك فور موافقة كل عضو على الانضمام</p>
+                        <p class="success-notify-nudge">🔔 سنُعلمك فور موافقة كل عضو</p>
 
                         <div class="invite-alt-divider">أو شارك الرابط مباشرة</div>
 
@@ -3027,14 +2812,19 @@
                     </div>
                 </div>
 
-            </div>
+            </div><!-- /.wizard-body -->
 
-            <div class="wizard-footer" id="wizardFooter">
+            <!-- BOTTOM NAV -->
+            <div class="wizard-bottom-nav" id="wizardBottomNav">
+                <button class="wbnav-home" id="wizardHomeBtn" aria-label="الرئيسية">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>الرئيسية</span>
+                </button>
                 <button class="wizard-next" id="wizardNext" disabled>التالي</button>
             </div>
-            <p class="wizard-bottom-trust" id="wizardBottomTrust">🔒 مجاني — لا رسوم، لا بطاقة بنكية</p>
-        </div>
-    </div>
+
+        </div><!-- /.wizard-fs -->
+    </div><!-- /.wizard-overlay -->
 
     <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
 
@@ -3189,49 +2979,56 @@
         });
 
         // ── Wizard Logic ──
-        const overlay = document.getElementById('wizardOverlay');
-        const backBtn = document.getElementById('wizardBack');
-        const closeBtn = document.getElementById('wizardClose');
-        const nextBtn = document.getElementById('wizardNext');
-        const wizardFooter = document.getElementById('wizardFooter');
-        const dots = document.querySelectorAll('.progress-dot');
-        const steps = document.querySelectorAll('.wizard-step');
+        const overlay    = document.getElementById('wizardOverlay');
+        const backBtn    = document.getElementById('wizardBack');
+        const closeBtn   = document.getElementById('wizardClose');
+        const nextBtn    = document.getElementById('wizardNext');
+        const homeBtn    = document.getElementById('wizardHomeBtn');
+        const stepEls    = document.querySelectorAll('.wizard-step');
+        const wstepDots  = document.querySelectorAll('.wstep');
+        const wstepLines = document.querySelectorAll('.wstep-line');
 
-        const LAST_INPUT_STEP = 3; // add members (final input step)
-        const SUCCESS_STEP = 4;
+        const LAST_INPUT_STEP = 4;
+        const SUCCESS_STEP    = 5;
 
-        let currentStep = 1;
-        let circleData = { name: '', amount: 0, members: 5 };
-        let selectedContacts = []; // array of {id, name, phone, color}
+        let currentStep      = 1;
+        let circleData       = { name: '', amount: 0, members: 5 };
+        let selectedContacts = [];
+        let cycleOrder       = [];
+        let dragSrcIndex     = null;
 
-        // Sample contacts (Iraqi names & numbers)
         const sampleContacts = [
-            { id: 'c1', name: 'أحمد حسين', phone: '٠٧٧٠١٢٣٤٥٦٧', color: '#0D9488' },
-            { id: 'c2', name: 'زينب علي', phone: '٠٧٨١٩٨٧٦٥٤٣', color: '#7C3AED' },
-            { id: 'c3', name: 'محمد جاسم', phone: '٠٧٥٠٥٥٥١٢٣٤', color: '#DC2626' },
-            { id: 'c4', name: 'نور الهدى', phone: '٠٧٧٠٣٣٣٤٤٥٥', color: '#2563EB' },
-            { id: 'c5', name: 'علي كريم', phone: '٠٧٨١٢٢٢٣٣٤٤', color: '#D97706' },
-            { id: 'c6', name: 'فاطمة حسن', phone: '٠٧٥٠٧٧٧٨٨٩٩', color: '#059669' },
-            { id: 'c7', name: 'حسن عبدالله', phone: '٠٧٧٠٤٤٤٥٥٦٦', color: '#4F46E5' },
-            { id: 'c8', name: 'سارة محمود', phone: '٠٧٨١٦٦٦٧٧٨٨', color: '#BE185D' },
-            { id: 'c9', name: 'عمر فاضل', phone: '٠٧٥٠٨٨٨٩٩٠٠', color: '#0369A1' },
-            { id: 'c10', name: 'رقية خالد', phone: '٠٧٧٠٩٩٩٠٠١١', color: '#9333EA' },
-            { id: 'c11', name: 'مصطفى كاظم', phone: '٠٧٨١٣٣٣٢٢١١', color: '#B45309' },
-            { id: 'c12', name: 'هدى ناصر', phone: '٠٧٥٠٢٢٢١١٠٠', color: '#0F766E' },
+            { id: 'c1',  name: 'أحمد حسين',   phone: '٠٧٧٠١٢٣٤٥٦٧', color: '#0D9488' },
+            { id: 'c2',  name: 'زينب علي',     phone: '٠٧٨١٩٨٧٦٥٤٣', color: '#7C3AED' },
+            { id: 'c3',  name: 'محمد جاسم',   phone: '٠٧٥٠٥٥٥١٢٣٤', color: '#DC2626' },
+            { id: 'c4',  name: 'نور الهدى',   phone: '٠٧٧٠٣٣٣٤٤٥٥', color: '#2563EB' },
+            { id: 'c5',  name: 'علي كريم',    phone: '٠٧٨١٢٢٢٣٣٤٤', color: '#D97706' },
+            { id: 'c6',  name: 'فاطمة حسن',   phone: '٠٧٥٠٧٧٧٨٨٩٩', color: '#059669' },
+            { id: 'c7',  name: 'حسن عبدالله', phone: '٠٧٧٠٤٤٤٥٥٦٦', color: '#4F46E5' },
+            { id: 'c8',  name: 'سارة محمود',  phone: '٠٧٨١٦٦٦٧٧٨٨', color: '#BE185D' },
+            { id: 'c9',  name: 'عمر فاضل',    phone: '٠٧٥٠٨٨٨٩٩٠٠', color: '#0369A1' },
+            { id: 'c10', name: 'رقية خالد',   phone: '٠٧٧٠٩٩٩٠٠١١', color: '#9333EA' },
+            { id: 'c11', name: 'مصطفى كاظم',  phone: '٠٧٨١٣٣٣٢٢١١', color: '#B45309' },
+            { id: 'c12', name: 'هدى ناصر',    phone: '٠٧٥٠٢٢٢١١٠٠', color: '#0F766E' },
         ];
         let manualIdCounter = 100;
 
-        // Arabic number helper
         function toAr(n) {
             const d = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
             return String(n).replace(/\d/g, c => d[c]);
         }
 
-        function formatAr(n) {
-            return toAr(n.toLocaleString('en-US'));
+        function formatAr(n) { return toAr(n.toLocaleString('en-US')); }
+
+        const arMonths = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+        function getPayoutMonth(turnIndex) {
+            const now = new Date();
+            const d   = new Date(now.getFullYear(), now.getMonth() + 1 + turnIndex);
+            return arMonths[d.getMonth()] + ' ' + toAr(d.getFullYear());
         }
 
-        // Open wizard
+        // ── Open wizard ──
         document.querySelectorAll('.open-wizard').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -3239,130 +3036,115 @@
                 resetWizard();
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                setTimeout(() => document.getElementById('circleName').focus(), 400);
+                setTimeout(() => document.getElementById('circleName').focus(), 300);
             });
         });
 
-        // Close wizard
         function closeWizard() {
             overlay.classList.remove('active');
             document.body.style.overflow = '';
         }
 
         closeBtn.addEventListener('click', closeWizard);
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeWizard();
+
+        homeBtn.addEventListener('click', () => {
+            closeWizard();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && overlay.classList.contains('active')) closeWizard();
         });
 
-        // Reset
         function resetWizard() {
-            currentStep = 1;
-            circleData = { name: '', amount: 0, members: 5 };
+            currentStep      = 1;
+            circleData       = { name: '', amount: 0, members: 5 };
             selectedContacts = [];
-            document.getElementById('circleName').value = '';
-            document.getElementById('customAmount').value = '';
+            cycleOrder       = [];
+            document.getElementById('circleName').value    = '';
+            document.getElementById('customAmount').value  = '';
             document.getElementById('contactsSearch').value = '';
             document.getElementById('manualAddForm').style.display = 'none';
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
             updateMembersDisplay();
-            // Reset invite counter
-            const counter = document.getElementById('inviteCounter');
-            if (counter) {
-                counter.classList.remove('has-invites');
-                document.getElementById('inviteCount').textContent = '٠';
-                counter.querySelector('.counter-pending-label').textContent = 'ادعُ شخصاً واحداً على الأقل';
-            }
             goToStep(1);
         }
 
-        // Navigation
         backBtn.addEventListener('click', () => {
             if (currentStep > 1 && currentStep <= LAST_INPUT_STEP) goToStep(currentStep - 1);
         });
 
         nextBtn.addEventListener('click', () => {
-            if (currentStep === LAST_INPUT_STEP) {
-                goToStep(SUCCESS_STEP);
-                launchConfetti();
-            } else if (currentStep < LAST_INPUT_STEP) {
+            if (currentStep < LAST_INPUT_STEP) {
                 saveStepData();
                 goToStep(currentStep + 1);
+            } else if (currentStep === LAST_INPUT_STEP) {
+                goToStep(SUCCESS_STEP);
+                launchConfetti();
             }
         });
 
         function goToStep(step) {
             currentStep = step;
 
-            steps.forEach(s => s.classList.remove('active'));
+            stepEls.forEach(s => s.classList.remove('active'));
             const target = document.querySelector(`.wizard-step[data-step="${step}"]`);
             if (target) target.classList.add('active');
 
-            // Progress dots
-            dots.forEach(dot => {
+            // Update step track
+            wstepDots.forEach(dot => {
                 const ds = parseInt(dot.dataset.step);
                 dot.classList.remove('active', 'done');
-                if (ds === step && step <= LAST_INPUT_STEP) dot.classList.add('active');
-                else if (ds < step) dot.classList.add('done');
+                if (ds === step && step < SUCCESS_STEP) dot.classList.add('active');
+                else if (ds < step || step === SUCCESS_STEP) dot.classList.add('done');
             });
 
-            // Back button
+            wstepLines.forEach(line => {
+                line.classList.toggle('done', parseInt(line.dataset.line) < step);
+            });
+
             backBtn.classList.toggle('hidden', step <= 1 || step === SUCCESS_STEP);
 
-            // Footer & button text
             if (step === SUCCESS_STEP) {
-                wizardFooter.style.display = 'none';
-                document.querySelector('.wizard-progress').style.display = 'none';
+                nextBtn.style.display = 'none';
             } else {
-                wizardFooter.style.display = '';
-                document.querySelector('.wizard-progress').style.display = '';
+                nextBtn.style.display = '';
                 nextBtn.textContent = step === LAST_INPUT_STEP ? '🎉 أنشئ السِلفة وأرسل الدعوات' : 'التالي';
             }
 
-            // Step-specific logic
             if (step === 2) updateMembersPreview();
-            if (step === 3) renderContacts();
+            if (step === 3) { cycleOrder = []; renderContacts(); }
+            if (step === 4) renderCyclePlanning();
             if (step === SUCCESS_STEP) populatePendingList();
 
             validateStep();
         }
 
-        // Save data from current step
         function saveStepData() {
             if (currentStep === 1) {
                 circleData.name = document.getElementById('circleName').value.trim();
-                const custom = document.getElementById('customAmount').value;
-                if (custom && parseInt(custom) > 0) {
-                    circleData.amount = parseInt(custom);
-                }
+                const custom = parseInt(document.getElementById('customAmount').value);
+                if (custom > 0) circleData.amount = custom;
             }
         }
 
-        // Validation
         function validateStep() {
             let valid = false;
-
             if (currentStep === 1) {
-                // Step 1 needs both name and amount
-                const hasName = document.getElementById('circleName').value.trim().length >= 2;
-                const hasAmount = circleData.amount > 0;
-                valid = hasName && hasAmount;
+                valid = document.getElementById('circleName').value.trim().length >= 2 && circleData.amount > 0;
             } else if (currentStep === 2) {
                 valid = circleData.members >= 3 && circleData.members <= 20;
-            } else if (currentStep === LAST_INPUT_STEP) {
-                // Must send at least one invite
-                valid = selectedContacts.length > 0;
+            } else if (currentStep === 3) {
+                valid = selectedContacts.length >= 1;
+            } else if (currentStep === 4) {
+                valid = true;
             }
-
             nextBtn.disabled = !valid;
         }
 
-        // Step 1: Name input
+        // ── Step 1 ──
         document.getElementById('circleName').addEventListener('input', validateStep);
 
-        // Step 2: Amount presets
         document.querySelectorAll('.amount-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
@@ -3376,7 +3158,7 @@
         document.getElementById('customAmount').addEventListener('input', (e) => {
             const val = parseInt(e.target.value);
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-            if (val && val > 0) {
+            if (val > 0) {
                 circleData.amount = val;
                 document.querySelectorAll('.amount-btn').forEach(b => {
                     if (parseInt(b.dataset.amount) === val) b.classList.add('selected');
@@ -3387,131 +3169,211 @@
             validateStep();
         });
 
-        // Step 3: Members stepper
+        // ── Step 2 ──
         const membersCountEl = document.getElementById('membersCount');
         const minusBtn = document.getElementById('membersMinus');
-        const plusBtn = document.getElementById('membersPlus');
+        const plusBtn  = document.getElementById('membersPlus');
 
         minusBtn.addEventListener('click', () => {
-            if (circleData.members > 3) {
-                circleData.members--;
-                updateMembersDisplay();
-                updateMembersPreview();
-                validateStep();
-            }
+            if (circleData.members > 3) { circleData.members--; updateMembersDisplay(); updateMembersPreview(); validateStep(); }
         });
 
         plusBtn.addEventListener('click', () => {
-            if (circleData.members < 20) {
-                circleData.members++;
-                updateMembersDisplay();
-                updateMembersPreview();
-                validateStep();
-            }
+            if (circleData.members < 20) { circleData.members++; updateMembersDisplay(); updateMembersPreview(); validateStep(); }
         });
 
         function updateMembersDisplay() {
             membersCountEl.textContent = toAr(circleData.members);
             minusBtn.disabled = circleData.members <= 3;
-            plusBtn.disabled = circleData.members >= 20;
+            plusBtn.disabled  = circleData.members >= 20;
         }
 
         function updateMembersPreview() {
-            const monthly = circleData.amount;
-            const payout = monthly * circleData.members;
-            document.getElementById('previewMonthly').textContent = formatAr(monthly) + ' د.ع';
-            document.getElementById('previewPayout').textContent = formatAr(payout) + ' د.ع';
+            const payout = circleData.amount * circleData.members;
+            document.getElementById('previewMonthly').textContent  = formatAr(circleData.amount) + ' د.ع';
+            document.getElementById('previewPayout').textContent   = formatAr(payout) + ' د.ع';
             document.getElementById('previewDuration').textContent = toAr(circleData.members) + ' أشهر';
         }
 
-        // ── Step 3: Invite contacts (request flow) ──
+        // ── Step 3: Select contacts ──
         function renderContacts() {
-            const list = document.getElementById('contactsList');
-            const allContacts = [...sampleContacts];
+            const slots = circleData.members - 1;
+            document.getElementById('scTotal').textContent = toAr(slots);
+            updateSelectionCounter();
 
-            list.innerHTML = allContacts.map(c => {
-                const isInvited = selectedContacts.some(sc => sc.id === c.id);
+            const list = document.getElementById('contactsList');
+            list.innerHTML = sampleContacts.map(c => {
+                const isSel  = selectedContacts.some(sc => sc.id === c.id);
+                const isFull = !isSel && selectedContacts.length >= slots;
                 return `
-                    <div class="contact-item ${isInvited ? 'invited' : ''}"
+                    <div class="contact-item ${isSel ? 'selected' : ''} ${isFull ? 'disabled' : ''}"
                          data-id="${c.id}" data-name="${c.name}" data-phone="${c.phone}" data-color="${c.color}">
                         <div class="contact-avatar" style="background:${c.color};">${c.name.charAt(0)}</div>
                         <div class="contact-info">
                             <span class="contact-name">${c.name}</span>
                             <span class="contact-phone">${c.phone}</span>
                         </div>
-                        <button class="invite-btn ${isInvited ? 'pending' : ''}" data-id="${c.id}" ${isInvited ? 'disabled' : ''}>
-                            ${isInvited ? '⏳ في الانتظار' : '📩 دعوة'}
-                        </button>
+                        <div class="contact-check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                        </div>
                     </div>
                 `;
             }).join('');
 
-            // Attach invite button handlers
-            list.querySelectorAll('.invite-btn:not(.pending)').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    inviteContact(btn.dataset.id);
-                });
+            list.querySelectorAll('.contact-item').forEach(item => {
+                item.addEventListener('click', () => { if (!item.classList.contains('disabled')) toggleContact(item); });
             });
 
-            updateInviteCounter();
             filterContacts();
         }
 
-        function inviteContact(id) {
-            // Find contact data (from sample or manual)
-            const allContacts = [...sampleContacts, ...selectedContacts.filter(c => c.id.startsWith('m'))];
-            const contact = sampleContacts.find(c => c.id === id)
-                || selectedContacts.find(c => c.id === id);
-            if (!contact || selectedContacts.some(c => c.id === id)) return;
+        function toggleContact(item) {
+            const id    = item.dataset.id;
+            const slots = circleData.members - 1;
+            const idx   = selectedContacts.findIndex(c => c.id === id);
 
-            selectedContacts.push({ id: contact.id, name: contact.name, phone: contact.phone, color: contact.color });
-
-            // Animate and flip button to pending
-            const btn = document.querySelector(`.invite-btn[data-id="${id}"]`);
-            const row = document.querySelector(`.contact-item[data-id="${id}"]`);
-            if (btn) {
-                btn.classList.add('sending');
-                setTimeout(() => {
-                    btn.classList.remove('sending');
-                    btn.classList.add('pending');
-                    btn.textContent = '⏳ في الانتظار';
-                    btn.disabled = true;
-                }, 280);
+            if (idx >= 0) {
+                selectedContacts.splice(idx, 1);
+                item.classList.remove('selected');
+            } else {
+                if (selectedContacts.length >= slots) return;
+                selectedContacts.push({ id, name: item.dataset.name, phone: item.dataset.phone, color: item.dataset.color });
+                item.classList.add('selected');
             }
-            if (row) row.classList.add('invited');
 
-            updateInviteCounter();
+            const isFull = selectedContacts.length >= slots;
+            document.querySelectorAll('.contact-item:not(.selected)').forEach(el => el.classList.toggle('disabled', isFull));
+            updateSelectionCounter();
             validateStep();
         }
 
-        function updateInviteCounter() {
-            const counter = document.getElementById('inviteCounter');
-            const countEl = document.getElementById('inviteCount');
-            const pendingLabel = counter.querySelector('.counter-pending-label');
-            const n = selectedContacts.length;
-
-            countEl.textContent = toAr(n);
-
-            if (n > 0) {
-                counter.classList.add('has-invites');
-                pendingLabel.textContent = '⏳ في انتظار الموافقة';
-            } else {
-                counter.classList.remove('has-invites');
-                pendingLabel.textContent = 'ادعُ شخصاً واحداً على الأقل';
-            }
+        function updateSelectionCounter() {
+            const slots  = circleData.members - 1;
+            const n      = selectedContacts.length;
+            document.getElementById('scSelected').textContent = toAr(n);
+            document.getElementById('scTotal').textContent    = toAr(slots);
+            const fill = document.getElementById('scProgressFill');
+            if (fill) fill.style.width = (slots > 0 ? (n / slots) * 100 : 0) + '%';
+            const pill = document.getElementById('selectionCounterPill');
+            if (pill) pill.classList.toggle('full', n >= slots && slots > 0);
         }
 
-        // Populate pending list on success screen
+        document.getElementById('contactsSearch').addEventListener('input', filterContacts);
+
+        function filterContacts() {
+            const query = document.getElementById('contactsSearch').value.trim().toLowerCase();
+            let visible = 0;
+            document.querySelectorAll('.contact-item').forEach(item => {
+                const match = !query || item.dataset.name.toLowerCase().includes(query) || item.dataset.phone.includes(query);
+                item.classList.toggle('contact-item-hidden', !match);
+                if (match) visible++;
+            });
+            const noRes = document.getElementById('noResults');
+            if (noRes) noRes.style.display = (query && visible === 0) ? 'block' : 'none';
+        }
+
+        document.getElementById('addManualBtn').addEventListener('click', () => {
+            const form = document.getElementById('manualAddForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            if (form.style.display === 'block') document.getElementById('manualName').focus();
+        });
+
+        document.getElementById('manualAddConfirm').addEventListener('click', addManualContact);
+        document.getElementById('manualPhone').addEventListener('keydown', (e) => { if (e.key === 'Enter') addManualContact(); });
+
+        function addManualContact() {
+            const nameInput  = document.getElementById('manualName');
+            const phoneInput = document.getElementById('manualPhone');
+            const name  = nameInput.value.trim();
+            const phone = phoneInput.value.trim();
+            if (!name) return;
+
+            const slots = circleData.members - 1;
+            if (selectedContacts.length >= slots) return;
+
+            const colors = ['#7C3AED','#DC2626','#2563EB','#D97706','#059669','#4F46E5','#BE185D','#0369A1','#9333EA'];
+            const color  = colors[manualIdCounter % colors.length];
+            const id     = 'm' + (manualIdCounter++);
+            selectedContacts.push({ id, name, phone: phone || '—', color });
+            updateSelectionCounter();
+            validateStep();
+
+            const list = document.getElementById('contactsList');
+            const row  = document.createElement('div');
+            row.className          = 'contact-item selected';
+            row.dataset.id         = id;
+            row.dataset.name       = name;
+            row.dataset.phone      = phone || '';
+            row.dataset.color      = color;
+            row.innerHTML = `
+                <div class="contact-avatar" style="background:${color};">${name.charAt(0)}</div>
+                <div class="contact-info">
+                    <span class="contact-name">${name}</span>
+                    <span class="contact-phone">${phone || '—'}</span>
+                </div>
+                <div class="contact-check" style="background:var(--teal);border-color:var(--teal);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+            `;
+            list.prepend(row);
+            row.addEventListener('click', () => { if (!row.classList.contains('disabled')) toggleContact(row); });
+
+            nameInput.value = ''; phoneInput.value = ''; nameInput.focus();
+        }
+
+        // ── Step 4: Cycle Planning ──
+        function renderCyclePlanning() {
+            if (cycleOrder.length === 0) {
+                cycleOrder = [
+                    { id: 'you', name: 'أنت', color: '#1B365D', isYou: true },
+                    ...selectedContacts.map(c => ({ id: c.id, name: c.name, color: c.color, isYou: false }))
+                ];
+            }
+            renderCycleRows();
+        }
+
+        function renderCycleRows() {
+            const payout = circleData.amount * circleData.members;
+            const list   = document.getElementById('cycleList');
+            list.innerHTML = cycleOrder.map((m, i) => `
+                <div class="cycle-row ${m.isYou ? 'you-row' : ''}" draggable="true" data-index="${i}">
+                    <div class="cycle-drag">⠿</div>
+                    <div class="cycle-turn">${toAr(i + 1)}</div>
+                    <div class="cycle-avatar" style="background:${m.color};">${m.name.charAt(0)}</div>
+                    <div class="cycle-info">
+                        <span class="cycle-name">${m.name}${m.isYou ? ' ⭐' : ''}</span>
+                        <span class="cycle-month">${getPayoutMonth(i)}</span>
+                    </div>
+                    <div class="cycle-amount">${formatAr(payout)} د.ع</div>
+                </div>
+            `).join('');
+
+            list.querySelectorAll('.cycle-row').forEach(row => {
+                row.addEventListener('dragstart', e => { dragSrcIndex = parseInt(e.currentTarget.dataset.index); e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
+                row.addEventListener('dragover',  e => { e.preventDefault(); document.querySelectorAll('.cycle-row').forEach(r => r.classList.remove('drag-over')); e.currentTarget.classList.add('drag-over'); });
+                row.addEventListener('drop',      e => { e.preventDefault(); const dest = parseInt(e.currentTarget.dataset.index); if (dragSrcIndex !== dest) { const moved = cycleOrder.splice(dragSrcIndex, 1)[0]; cycleOrder.splice(dest, 0, moved); renderCycleRows(); } });
+                row.addEventListener('dragend',   e => { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.cycle-row').forEach(r => r.classList.remove('drag-over')); dragSrcIndex = null; });
+            });
+        }
+
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            for (let i = cycleOrder.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cycleOrder[i], cycleOrder[j]] = [cycleOrder[j], cycleOrder[i]];
+            }
+            renderCycleRows();
+        });
+
+        // ── Step 5: Success ──
         function populatePendingList() {
             const list = document.getElementById('pendingMembersList');
             if (!list) return;
             if (selectedContacts.length === 0) {
-                list.innerHTML = '<div style="font-size:13px;color:var(--text-light);text-align:center;padding:12px 0;">لم يُرسَل أي دعوات بعد</div>';
+                list.innerHTML = '<div style="font-size:12px;color:var(--text-light);text-align:center;padding:10px 0;">لم يُرسَل أي دعوات</div>';
                 return;
             }
             list.innerHTML = selectedContacts.map((c, i) => `
-                <div class="pending-member-row" style="animation: slideInItem 0.35s ease ${i * 0.08}s both;">
+                <div class="pending-member-row" style="animation: wizardFadeIn 0.35s ease ${i * 0.07}s both;">
                     <div class="pending-member-avatar" style="background:${c.color};">${c.name.charAt(0)}</div>
                     <span class="pending-member-name">${c.name}</span>
                     <span class="pending-status-badge">⏳ في الانتظار</span>
@@ -3519,159 +3381,48 @@
             `).join('');
         }
 
-        // Search contacts
-        document.getElementById('contactsSearch').addEventListener('input', filterContacts);
-
-        function filterContacts() {
-            const query = document.getElementById('contactsSearch').value.trim().toLowerCase();
-            let visibleCount = 0;
-            document.querySelectorAll('.contact-item').forEach(item => {
-                const name = item.dataset.name.toLowerCase();
-                const phone = item.dataset.phone;
-                const match = !query || name.includes(query) || phone.includes(query);
-                item.classList.toggle('contact-item-hidden', !match);
-                if (match) visibleCount++;
-            });
-            const noRes = document.getElementById('noResults');
-            if (noRes) noRes.style.display = (query && visibleCount === 0) ? 'block' : 'none';
-        }
-
-        // Manual add
-        document.getElementById('addManualBtn').addEventListener('click', () => {
-            const form = document.getElementById('manualAddForm');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-            if (form.style.display === 'block') {
-                document.getElementById('manualName').focus();
-            }
-        });
-
-        document.getElementById('manualAddConfirm').addEventListener('click', addManualContact);
-        document.getElementById('manualPhone').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') addManualContact();
-        });
-
-        function addManualContact() {
-            const nameInput = document.getElementById('manualName');
-            const phoneInput = document.getElementById('manualPhone');
-            const name = nameInput.value.trim();
-            const phone = phoneInput.value.trim();
-
-            if (!name) return;
-
-            const colors = ['#7C3AED','#DC2626','#2563EB','#D97706','#059669','#4F46E5','#BE185D','#0369A1','#9333EA'];
-            const color = colors[manualIdCounter % colors.length];
-            const id = 'm' + (manualIdCounter++);
-
-            // Add as already-invited (manual contacts are treated as sent immediately)
-            selectedContacts.push({ id, name, phone: phone || '—', color });
-            updateInviteCounter();
-            validateStep();
-
-            // Add a row to the contact list visually
-            const list = document.getElementById('contactsList');
-            const row = document.createElement('div');
-            row.className = 'contact-item invited';
-            row.dataset.id = id;
-            row.dataset.name = name;
-            row.dataset.phone = phone || '';
-            row.dataset.color = color;
-            row.innerHTML = `
-                <div class="contact-avatar" style="background:${color};">${name.charAt(0)}</div>
-                <div class="contact-info">
-                    <span class="contact-name">${name}</span>
-                    <span class="contact-phone">${phone || '—'}</span>
-                </div>
-                <button class="invite-btn pending" disabled>⏳ في الانتظار</button>
-            `;
-            list.prepend(row);
-
-            nameInput.value = '';
-            phoneInput.value = '';
-            nameInput.focus();
-        }
-
-        // Step 5: Review
-        function populateReview() {
-            const payout = circleData.amount * circleData.members;
-            document.getElementById('reviewName').textContent = circleData.name;
-            document.getElementById('reviewAmount').textContent = formatAr(circleData.amount) + ' د.ع';
-            document.getElementById('reviewMembers').textContent = toAr(circleData.members) + ' أعضاء';
-            document.getElementById('reviewDuration').textContent = toAr(circleData.members) + ' أشهر';
-            document.getElementById('reviewPayout').textContent = formatAr(payout) + ' د.ع';
-        }
-
-        // Copy invite link
         document.getElementById('copyBtn').addEventListener('click', function() {
-            const linkInput = document.getElementById('inviteLink');
-            linkInput.select();
+            document.getElementById('inviteLink').select();
             document.execCommand('copy');
             this.textContent = 'تم النسخ!';
             this.classList.add('copied');
-            setTimeout(() => {
-                this.textContent = 'نسخ الرابط';
-                this.classList.remove('copied');
-            }, 2000);
+            setTimeout(() => { this.textContent = 'نسخ الرابط'; this.classList.remove('copied'); }, 2000);
         });
 
-        // Confetti
+        // ── Confetti ──
         function launchConfetti() {
             const canvas = document.getElementById('confettiCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const ctx    = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
 
-            const colors = ['#0D9488', '#F5C542', '#1B365D', '#14b8a6', '#fbd872', '#22c55e'];
-            const particles = [];
-
-            for (let i = 0; i < 120; i++) {
-                particles.push({
-                    x: canvas.width / 2 + (Math.random() - 0.5) * 200,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 16,
-                    vy: (Math.random() - 1) * 18 - 4,
-                    w: Math.random() * 10 + 5,
-                    h: Math.random() * 6 + 3,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    rotation: Math.random() * 360,
-                    rotSpeed: (Math.random() - 0.5) * 12,
-                    gravity: 0.3 + Math.random() * 0.2,
-                    opacity: 1
-                });
-            }
+            const colors = ['#0D9488','#F5C542','#1B365D','#14b8a6','#fbd872','#22c55e'];
+            const particles = Array.from({ length: 120 }, () => ({
+                x: canvas.width / 2 + (Math.random() - 0.5) * 200, y: canvas.height / 2,
+                vx: (Math.random() - 0.5) * 16, vy: (Math.random() - 1) * 18 - 4,
+                w: Math.random() * 10 + 5, h: Math.random() * 6 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 12,
+                gravity: 0.3 + Math.random() * 0.2, opacity: 1
+            }));
 
             let frame = 0;
-            function draw() {
+            (function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 let alive = false;
-
                 particles.forEach(p => {
-                    p.x += p.vx;
-                    p.vy += p.gravity;
-                    p.y += p.vy;
-                    p.rotation += p.rotSpeed;
-                    p.vx *= 0.98;
-
+                    p.x += p.vx; p.vy += p.gravity; p.y += p.vy;
+                    p.rotation += p.rotSpeed; p.vx *= 0.98;
                     if (frame > 60) p.opacity -= 0.015;
                     if (p.opacity <= 0) return;
-
                     alive = true;
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate((p.rotation * Math.PI) / 180);
-                    ctx.globalAlpha = Math.max(0, p.opacity);
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-                    ctx.restore();
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.globalAlpha = Math.max(0, p.opacity); ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
                 });
-
                 frame++;
-                if (alive && frame < 200) {
-                    requestAnimationFrame(draw);
-                } else {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-            }
-            requestAnimationFrame(draw);
+                if (alive && frame < 200) requestAnimationFrame(draw);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            })();
         }
 
     </script>
