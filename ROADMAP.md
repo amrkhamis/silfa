@@ -280,7 +280,9 @@ Note: `circleData.members` defaults to 5 at this point, which is fine — the pr
 
 ---
 
-## TICKET 6 — Seat Visualizer (Step 2)
+## ~~TICKET 6 — Seat Visualizer (Step 2)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added `.seats-visualizer` container between step desc and members stepper. `renderSeats()` generates one gold "أنت" seat + numbered dashed outlines with staggered pop animation. Called from `updateMembersDisplay()` and `goToStep` step 2.
 
 **Why:** "5 أعضاء" is abstract. Seeing 5 circles — one filled gold (you) and 4 empty outlines — makes the concept of a circle feel real. This is the highest-impact visual change in the whole wizard.
 
@@ -340,7 +342,9 @@ Call `renderSeats()` at the end of `updateMembersDisplay()` and also in `goToSte
 
 ---
 
-## TICKET 7 — Payout Hero Number + Duration Strip (Step 2)
+## ~~TICKET 7 — Payout Hero Number + Duration Strip (Step 2)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Replaced `.live-preview` rows with `.payout-hero` (42px teal amount), `.preview-meta-row` (monthly + duration side by side), and `.duration-strip` (scrollable month pills, first one gold). `updateMembersPreview()` now renders the strip using existing `getPayoutMonth()`.
 
 **Why:** The emotional hook of a جمعية is "I will receive a large lump sum." That number must be the visual hero of Step 2. The duration strip converts "5 أشهر" from abstract to concrete calendar months.
 
@@ -413,7 +417,9 @@ function updateMembersPreview() {
 
 ---
 
-## TICKET 8 — "أنت" Pinned Row in Step 3
+## ~~TICKET 8 — "أنت" Pinned Row in Step 3~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added `.you-contact-pin` row (gold-tinted, non-interactive) with `.selected-check` teal checkmark, pinned above the contacts search box. No JS changes — decorative only; `cycleOrder` already prepends the "أنت" entry in `renderCyclePlanning()`.
 
 **Why:** The organizer is always a member. Showing them pinned at the top of the contacts list (gold, non-removable) reinforces their identity and makes the slot math obvious: "I need 4 more people."
 
