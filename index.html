@@ -1823,10 +1823,10 @@
         }
 
         .step1-preview-chip {
-            margin-top: 18px; padding: 12px 16px; border-radius: var(--radius-sm);
+            margin-top: 18px; padding: 10px 16px; border-radius: var(--radius-sm);
             background: rgba(13,148,136,0.07); border: 1.5px solid rgba(13,148,136,0.2);
-            text-align: center; font-size: 14px; font-weight: 600; color: var(--teal);
-            transition: all 0.3s;
+            text-align: center; font-size: 12px; font-weight: 600; color: var(--teal);
+            transition: all 0.3s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
 
         .amount-divider {
@@ -2518,6 +2518,156 @@
             .manual-input   { flex: 1 1 calc(50% - 4px); }
             .manual-add-confirm { width: 100%; }
         }
+
+        /* ═══════ View System ═══════ */
+        .app-view { display: none; position: fixed; inset: 0; z-index: 1000; background: var(--light-bg); overflow-y: auto; direction: rtl; font-family: 'Noto Sans Arabic', sans-serif; }
+        .app-view.active { display: block; animation: viewFadeIn 0.25s ease both; }
+        .app-view.exit { animation: viewFadeOut 0.18s ease both; }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes viewFadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        /* ── Dashboard ── */
+        .dash-container { max-width: 480px; margin: 0 auto; padding: 0 16px 100px; }
+        .dash-topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 16px 0; background: var(--light-bg); }
+        .dash-topbar-title { font-size: 22px; font-weight: 800; color: var(--navy); }
+        .dash-new-btn { display: flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 50px; background: var(--teal); color: white; font-weight: 700; font-size: 13px; border: none; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+        .dash-new-btn:hover { background: var(--teal-dark); }
+        .dash-section-label { font-size: 14px; font-weight: 700; color: var(--text-light); margin: 20px 0 12px; }
+
+        .dash-card { background: var(--white); border-radius: var(--radius); padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow-card); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1.5px solid var(--border); }
+        .dash-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+        .dash-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .dash-card-name { font-size: 17px; font-weight: 800; color: var(--navy); }
+        .dash-card-amount { font-size: 13px; color: var(--text-light); font-weight: 600; }
+        .dash-card-progress { height: 6px; background: #E2E8F0; border-radius: 3px; margin: 10px 0 8px; overflow: hidden; }
+        .dash-card-progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+        .dash-card-footer { display: flex; align-items: center; justify-content: space-between; }
+        .dash-card-meta { font-size: 12px; color: var(--text-light); }
+        .dash-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; }
+        .dash-badge.pending { background: rgba(245,197,66,0.15); color: #B45309; }
+        .dash-badge.active { background: rgba(13,148,136,0.1); color: var(--teal); }
+        .dash-badge.complete { background: rgba(100,116,139,0.1); color: var(--text-light); }
+        .dash-card-next { font-size: 12px; color: var(--teal); font-weight: 600; margin-top: 8px; }
+
+        .dash-create-card { background: var(--white); border: 2px dashed var(--border); border-radius: var(--radius); padding: 32px 18px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+        .dash-create-card:hover { border-color: var(--teal); background: rgba(13,148,136,0.03); }
+        .dash-create-card-icon { font-size: 28px; margin-bottom: 8px; }
+        .dash-create-card-text { font-size: 14px; font-weight: 700; color: var(--teal); }
+
+        .dash-empty { text-align: center; padding: 60px 20px; }
+        .dash-empty-icon { font-size: 48px; margin-bottom: 16px; }
+        .dash-empty-title { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .dash-empty-desc { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
+        .dash-empty-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; background: var(--teal); color: white; font-weight: 700; font-size: 15px; border: none; cursor: pointer; font-family: inherit; }
+
+        /* ── Circle Detail ── */
+        .detail-container { max-width: 480px; margin: 0 auto; padding: 0 16px 40px; }
+        .detail-topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; padding: 16px 0; background: var(--light-bg); }
+        .detail-back-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+        .detail-back-btn svg { width: 18px; height: 18px; stroke: var(--navy); }
+        .detail-title { font-size: 20px; font-weight: 800; color: var(--navy); flex: 1; }
+
+        .detail-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; text-align: center; color: white; }
+        .detail-hero-label { font-size: 13px; opacity: 0.7; margin-bottom: 4px; }
+        .detail-hero-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+        .detail-hero-amount { font-size: 38px; font-weight: 900; color: var(--gold); line-height: 1.1; margin: 8px 0; }
+        .detail-hero-sub { font-size: 12px; opacity: 0.6; }
+
+        .detail-meta-row { display: flex; gap: 8px; margin-bottom: 16px; }
+        .detail-meta-card { flex: 1; background: var(--white); border-radius: var(--radius-sm, 12px); padding: 14px; text-align: center; border: 1.5px solid var(--border); }
+        .detail-meta-label { font-size: 11px; color: var(--text-light); margin-bottom: 4px; display: block; }
+        .detail-meta-value { font-size: 16px; font-weight: 800; color: var(--navy); display: block; }
+
+        .detail-section { margin-bottom: 20px; }
+        .detail-section-title { font-size: 14px; font-weight: 700; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+        .detail-timeline { background: var(--white); border-radius: var(--radius); overflow: hidden; border: 1.5px solid var(--border); }
+        .detail-tl-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+        .detail-tl-row:last-child { border-bottom: none; }
+        .detail-tl-row.current { background: rgba(13,148,136,0.06); }
+        .detail-tl-row.paid { opacity: 0.6; }
+        .detail-tl-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .detail-tl-icon.paid { background: rgba(13,148,136,0.15); color: var(--teal); }
+        .detail-tl-icon.current { background: var(--gold); color: var(--navy); }
+        .detail-tl-icon.upcoming { background: var(--light-bg); color: var(--text-light); border: 1.5px dashed var(--border); }
+        .detail-tl-info { flex: 1; }
+        .detail-tl-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+        .detail-tl-month { font-size: 12px; color: var(--text-light); }
+        .detail-tl-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 50px; }
+        .detail-tl-status.paid { background: rgba(13,148,136,0.1); color: var(--teal); }
+        .detail-tl-status.current { background: rgba(245,197,66,0.2); color: #B45309; }
+        .detail-tl-status.upcoming { color: var(--text-light); }
+
+        .detail-member-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--white); border-radius: var(--radius-sm, 12px); margin-bottom: 8px; border: 1.5px solid var(--border); }
+        .detail-member-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+        .detail-member-info { flex: 1; }
+        .detail-member-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+        .detail-member-phone { font-size: 12px; color: var(--text-light); }
+        .detail-member-status { font-size: 11px; font-weight: 700; }
+        .detail-member-status.joined { color: var(--teal); }
+        .detail-member-status.pending { color: #B45309; }
+
+        .detail-action-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: var(--radius-sm, 12px); font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; margin-bottom: 10px; transition: background 0.2s; }
+        .detail-action-btn.primary { background: var(--teal); color: white; }
+        .detail-action-btn.primary:hover { background: var(--teal-dark); }
+        .detail-action-btn.secondary { background: var(--white); color: var(--navy); border: 1.5px solid var(--border); }
+        .detail-action-btn.danger { background: rgba(220,38,38,0.08); color: #DC2626; border: 1.5px solid rgba(220,38,38,0.2); }
+        .detail-action-btn.danger:hover { background: rgba(220,38,38,0.15); }
+
+        .detail-mark-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 50px; background: var(--gold); color: var(--navy); font-weight: 700; font-size: 13px; border: none; cursor: pointer; font-family: inherit; margin: 12px auto 0; animation: pulse 2s ease infinite; }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,197,66,0.4); } 50% { box-shadow: 0 0 0 8px rgba(245,197,66,0); } }
+
+        /* ── Join View ── */
+        .join-container { max-width: 480px; margin: 0 auto; padding: 24px 16px 40px; min-height: 100dvh; display: flex; flex-direction: column; }
+        .join-logo { text-align: center; margin-bottom: 24px; }
+        .join-logo span { font-size: 24px; font-weight: 900; color: var(--navy); }
+        .join-logo span em { font-style: normal; color: var(--teal); }
+
+        .join-card { background: var(--white); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1.5px solid var(--border); margin-bottom: 20px; }
+        .join-card-name { font-size: 18px; font-weight: 800; color: var(--navy); text-align: center; margin-bottom: 4px; }
+        .join-card-hero { font-size: 36px; font-weight: 900; color: var(--teal); text-align: center; line-height: 1.1; margin: 12px 0 4px; }
+        .join-card-hero-label { font-size: 13px; color: var(--text-light); text-align: center; margin-bottom: 16px; }
+
+        .join-meta-row { display: flex; align-items: center; justify-content: center; gap: 0; background: var(--light-bg); border-radius: var(--radius-sm, 12px); padding: 12px; margin-bottom: 16px; }
+        .join-meta-item { flex: 1; text-align: center; }
+        .join-meta-label { display: block; font-size: 11px; color: var(--text-light); margin-bottom: 2px; }
+        .join-meta-value { display: block; font-size: 15px; font-weight: 700; color: var(--navy); }
+        .join-meta-divider { width: 1px; height: 32px; background: var(--border); }
+
+        .join-creator { display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(245,197,66,0.08); border-radius: var(--radius-sm, 12px); margin-bottom: 12px; }
+        .join-creator-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+        .join-creator-info { flex: 1; }
+        .join-creator-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+        .join-creator-role { font-size: 11px; color: var(--teal); font-weight: 600; }
+
+        .join-progress { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .join-progress-bar { flex: 1; height: 6px; background: #E2E8F0; border-radius: 3px; overflow: hidden; }
+        .join-progress-fill { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.4s; }
+        .join-progress-text { font-size: 12px; color: var(--text-light); font-weight: 600; white-space: nowrap; }
+
+        .join-form { margin-top: 4px; }
+        .join-input-group { margin-bottom: 14px; }
+        .join-input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        .join-input-group input { width: 100%; padding: 12px 14px; border-radius: var(--radius-sm, 12px); border: 1.5px solid var(--border); font-size: 15px; font-family: inherit; background: var(--white); color: var(--navy); transition: border-color 0.2s; }
+        .join-input-group input:focus { outline: none; border-color: var(--teal); }
+        .join-submit-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: var(--radius-sm, 12px); background: var(--teal); color: white; font-size: 16px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; transition: background 0.2s; margin-top: 8px; }
+        .join-submit-btn:hover { background: var(--teal-dark); }
+        .join-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .join-footer-link { text-align: center; margin-top: 20px; font-size: 13px; color: var(--teal); cursor: pointer; font-weight: 600; }
+
+        .join-state { text-align: center; padding: 40px 20px; }
+        .join-state-icon { font-size: 48px; margin-bottom: 12px; }
+        .join-state-title { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+        .join-state-desc { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
+        .join-state-btn { display: inline-flex; padding: 12px 24px; border-radius: 50px; background: var(--teal); color: white; font-weight: 700; font-size: 14px; border: none; cursor: pointer; font-family: inherit; }
+
+        /* Skeleton loading */
+        .skeleton { background: linear-gradient(90deg, #E2E8F0 25%, #F1F5F9 50%, #E2E8F0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Wizard dashboard button (Step 5) */
+        .wizard-dashboard-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: var(--radius-sm, 12px); background: var(--navy); color: white; font-size: 14px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; margin-top: 10px; transition: background 0.2s; }
+        .wizard-dashboard-btn:hover { background: var(--navy-light); }
     </style>
 </head>
 <body>
@@ -3032,9 +3182,11 @@
                         <!-- Copy link fallback -->
                         <div class="invite-alt-divider">أو شارك الرابط مباشرة</div>
                         <div class="invite-link-box">
-                            <input type="text" id="inviteLink" value="silfa.app/join/xK9mQ2" readonly>
+                            <input type="text" id="inviteLink" value="" readonly>
                             <button class="copy-btn" id="copyBtn">نسخ الرابط</button>
                         </div>
+
+                        <button class="wizard-dashboard-btn" id="goToDashboardBtn">📊 شاهد لوحة التحكم</button>
                     </div>
                 </div>
 
@@ -3042,17 +3194,42 @@
 
             <!-- BOTTOM NAV -->
             <div class="wizard-bottom-nav" id="wizardBottomNav">
-                <button class="wbnav-home" id="wizardHomeBtn" aria-label="الرئيسية">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    <span>الرئيسية</span>
+                <button class="wbnav-home" id="wizardHomeBtn" aria-label="تفاصيل">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>تفاصيل</span>
                 </button>
                 <button class="wizard-next" id="wizardNext" disabled>التالي</button>
+                <button class="wbnav-home" id="wizardDashBtn" aria-label="سِلفاتي">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                    <span>سِلفاتي</span>
+                </button>
             </div>
 
         </div><!-- /.wizard-fs -->
     </div><!-- /.wizard-overlay -->
 
     <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+
+    <!-- ═══════ Dashboard View ═══════ -->
+    <div class="app-view" id="dashboardView">
+        <div class="dash-container">
+            <div class="dash-topbar">
+                <span class="dash-topbar-title">سِلفاتي</span>
+                <button class="dash-new-btn" id="dashNewBtn">+ سِلفة جديدة</button>
+            </div>
+            <div id="dashContent"></div>
+        </div>
+    </div>
+
+    <!-- ═══════ Circle Detail View ═══════ -->
+    <div class="app-view" id="circleDetailView">
+        <div class="detail-container" id="detailContent"></div>
+    </div>
+
+    <!-- ═══════ Join View ═══════ -->
+    <div class="app-view" id="joinView">
+        <div class="join-container" id="joinContent"></div>
+    </div>
 
     <!-- ═══════ FAQ ═══════ -->
     <section class="faq-section" id="faq">
@@ -3278,6 +3455,10 @@
         closeBtn.addEventListener('click', goToLanding);
 
         homeBtn.addEventListener('click', goToLanding);
+
+        document.getElementById('wizardDashBtn').addEventListener('click', () => {
+            location.hash = '#dashboard';
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && overlay.classList.contains('active')) goToLanding();
@@ -3785,6 +3966,598 @@
                 if (alive && frame < 200) requestAnimationFrame(draw);
                 else ctx.clearRect(0, 0, canvas.width, canvas.height);
             })();
+        }
+
+        // ═══════ CIRCLE STORAGE API ═══════
+        function generateId() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+            let id = '';
+            for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)];
+            return id;
+        }
+
+        function getCircles() {
+            try { return JSON.parse(localStorage.getItem('silfa_circles') || '[]'); }
+            catch { return []; }
+        }
+
+        function saveCircle(circle) {
+            const circles = getCircles();
+            circles.unshift(circle);
+            localStorage.setItem('silfa_circles', JSON.stringify(circles));
+        }
+
+        function getCircle(id) {
+            return getCircles().find(c => c.id === id) || null;
+        }
+
+        function updateCircle(id, updates) {
+            const circles = getCircles();
+            const idx = circles.findIndex(c => c.id === id);
+            if (idx === -1) return;
+            Object.assign(circles[idx], updates);
+            localStorage.setItem('silfa_circles', JSON.stringify(circles));
+        }
+
+        function deleteCircle(id) {
+            const circles = getCircles().filter(c => c.id !== id);
+            localStorage.setItem('silfa_circles', JSON.stringify(circles));
+        }
+
+        // Build a circle object from current wizard state
+        function buildCircleFromWizard() {
+            const id = generateId();
+            const contacts = selectedContacts.map(c => ({
+                id: c.id, name: c.name, phone: c.phone, color: c.color, status: 'pending'
+            }));
+            const payoutTracker = cycleOrder.map((entry, i) => ({
+                month: i,
+                name: typeof entry === 'object' ? entry.name : entry,
+                status: i === 0 ? 'current' : 'upcoming'
+            }));
+            return {
+                id,
+                name: circleData.name || 'سِلفتي',
+                amount: circleData.amount,
+                members: circleData.members,
+                createdAt: new Date().toISOString().split('T')[0],
+                creatorName: 'أنت',
+                contacts,
+                cycleOrder: cycleOrder.map(e => typeof e === 'object' ? e.name : e),
+                payoutTracker
+            };
+        }
+
+        // ═══════ HASH ROUTER ═══════
+        function parseHashParams(hash) {
+            const qIdx = hash.indexOf('?');
+            const path = qIdx > -1 ? hash.slice(1, qIdx) : hash.slice(1);
+            const params = {};
+            if (qIdx > -1) {
+                hash.slice(qIdx + 1).split('&').forEach(p => {
+                    const [k, v] = p.split('=');
+                    params[decodeURIComponent(k)] = decodeURIComponent(v || '');
+                });
+            }
+            return { path, params };
+        }
+
+        function hideAllViews() {
+            document.querySelectorAll('.app-view.active').forEach(v => v.classList.remove('active'));
+        }
+
+        function showView(id) {
+            hideAllViews();
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active');
+            document.body.style.overflowY = 'hidden';
+        }
+
+        function router() {
+            const hash = window.location.hash;
+            const { path, params } = parseHashParams(hash);
+
+            if (path === 'dashboard') {
+                closeWizard();
+                hideAllViews();
+                showView('dashboardView');
+                renderDashboard();
+            } else if (path === 'circle' && params.id) {
+                closeWizard();
+                hideAllViews();
+                showView('circleDetailView');
+                renderCircleDetail(params.id);
+            } else if (path === 'join' && params.id) {
+                closeWizard();
+                hideAllViews();
+                showView('joinView');
+                renderJoinView(params.id);
+            } else if (path === 'landing') {
+                hideAllViews();
+                goToLanding();
+            } else {
+                // Default: show wizard (already active by default)
+                hideAllViews();
+            }
+        }
+
+        window.addEventListener('hashchange', router);
+
+        // ═══════ SAVE CIRCLE ON WIZARD COMPLETE ═══════
+        // Intercept step 5 transition to save circle
+        const origPopulatePendingList = populatePendingList;
+        populatePendingList = function() {
+            origPopulatePendingList();
+            // Save circle to localStorage
+            const circle = buildCircleFromWizard();
+            saveCircle(circle);
+            // Update invite link with real URL
+            const link = `${window.location.origin}${window.location.pathname}#join?id=${circle.id}`;
+            document.getElementById('inviteLink').value = link;
+            // Store current circle ID for dashboard button
+            document.getElementById('goToDashboardBtn').dataset.circleId = circle.id;
+        };
+
+        document.getElementById('goToDashboardBtn').addEventListener('click', () => {
+            location.hash = '#dashboard';
+        });
+
+        // ═══════ DASHBOARD ═══════
+        function renderDashboard() {
+            const circles = getCircles();
+            const container = document.getElementById('dashContent');
+            if (!container) return;
+
+            if (circles.length === 0) {
+                container.innerHTML = `
+                    <div class="dash-empty">
+                        <div class="dash-empty-icon">🏦</div>
+                        <div class="dash-empty-title">ما عندك سِلفات بعد</div>
+                        <div class="dash-empty-desc">أنشئ أول سِلفة وادعِ ناسك</div>
+                        <button class="dash-empty-btn" onclick="location.hash='';resetWizard();overlay.classList.add('active');document.body.style.overflowY='hidden';">+ أنشئ سِلفة جديدة</button>
+                    </div>`;
+                return;
+            }
+
+            let html = `<div class="dash-section-label">سِلفاتي (${toAr(circles.length)})</div>`;
+
+            circles.forEach(circle => {
+                const joinedCount = circle.contacts.filter(c => c.status === 'joined').length + 1;
+                const isFull = joinedCount >= circle.members;
+                const paidCount = circle.payoutTracker.filter(p => p.status === 'paid').length;
+                const allPaid = paidCount >= circle.payoutTracker.length;
+
+                let statusClass, statusText;
+                if (allPaid) { statusClass = 'complete'; statusText = '✅ مكتملة'; }
+                else if (isFull) { statusClass = 'active'; statusText = '🟢 نشطة'; }
+                else { statusClass = 'pending'; statusText = '🟡 بانتظار الأعضاء'; }
+
+                const progressPct = Math.round((joinedCount / circle.members) * 100);
+                const progressColor = isFull ? 'var(--teal)' : 'var(--gold)';
+
+                const currentTurn = circle.payoutTracker.find(p => p.status === 'current');
+                const currentTurnIdx = currentTurn ? currentTurn.month : 0;
+                const nextInfo = currentTurn && isFull ? `الدور القادم: ${currentTurn.name} (${getPayoutMonth(currentTurnIdx)})` : '';
+                const shareHint = !isFull ? 'شارك الرابط لإكمال الأعضاء ←' : '';
+
+                html += `
+                    <div class="dash-card" onclick="location.hash='#circle?id=${circle.id}'">
+                        <div class="dash-card-header">
+                            <span class="dash-card-name">🏦 ${circle.name}</span>
+                            <span class="dash-card-amount">${formatAr(circle.amount)} د.ع / شهر</span>
+                        </div>
+                        <div class="dash-card-progress">
+                            <div class="dash-card-progress-fill" style="width:${progressPct}%;background:${progressColor};"></div>
+                        </div>
+                        <div class="dash-card-footer">
+                            <span class="dash-card-meta">${toAr(joinedCount)} / ${toAr(circle.members)} أعضاء</span>
+                            <span class="dash-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        ${nextInfo ? `<div class="dash-card-next">${nextInfo}</div>` : ''}
+                        ${shareHint ? `<div class="dash-card-next" style="color:var(--gold);">${shareHint}</div>` : ''}
+                    </div>`;
+            });
+
+            html += `
+                <div class="dash-create-card" onclick="location.hash='';resetWizard();overlay.classList.add('active');document.body.style.overflowY='hidden';">
+                    <div class="dash-create-card-icon">+</div>
+                    <div class="dash-create-card-text">أنشئ سِلفة جديدة</div>
+                </div>`;
+
+            container.innerHTML = html;
+        }
+
+        document.getElementById('dashNewBtn').addEventListener('click', () => {
+            hideAllViews();
+            location.hash = '';
+            resetWizard();
+            overlay.classList.add('active');
+            document.body.style.overflowY = 'hidden';
+        });
+
+        // ═══════ CIRCLE DETAIL VIEW ═══════
+        function renderCircleDetail(id) {
+            const circle = getCircle(id);
+            const container = document.getElementById('detailContent');
+            if (!circle || !container) { location.hash = '#dashboard'; return; }
+
+            const joinedCount = circle.contacts.filter(c => c.status === 'joined').length + 1;
+            const isFull = joinedCount >= circle.members;
+            const payout = circle.amount * circle.members;
+            const currentTurnIdx = circle.payoutTracker.findIndex(p => p.status === 'current');
+            const currentTurn = currentTurnIdx > -1 ? circle.payoutTracker[currentTurnIdx] : null;
+
+            let html = `
+                <div class="detail-topbar">
+                    <button class="detail-back-btn" onclick="location.hash='#dashboard'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <span class="detail-title">${circle.name}</span>
+                </div>
+
+                <div class="detail-hero">
+                    <div class="detail-hero-label">إجمالي الاستلام لكل عضو</div>
+                    <div class="detail-hero-amount">${formatAr(payout)} د.ع</div>
+                    <div class="detail-hero-sub">${toAr(circle.members)} أعضاء · ${toAr(circle.members)} أشهر</div>
+                </div>
+
+                <div class="detail-meta-row">
+                    <div class="detail-meta-card">
+                        <span class="detail-meta-label">الحصة الشهرية</span>
+                        <span class="detail-meta-value">${formatAr(circle.amount)} د.ع</span>
+                    </div>
+                    <div class="detail-meta-card">
+                        <span class="detail-meta-label">حالة السِلفة</span>
+                        <span class="detail-meta-value">${isFull ? '🟢 نشطة' : '🟡 بانتظار'}</span>
+                    </div>
+                </div>`;
+
+            // Current turn highlight
+            if (currentTurn && isFull) {
+                html += `
+                    <div class="detail-section">
+                        <div style="background:rgba(245,197,66,0.1);border-radius:var(--radius);padding:18px;text-align:center;border:1.5px solid rgba(245,197,66,0.3);">
+                            <div style="font-size:12px;color:var(--text-light);margin-bottom:4px;">الدور الحالي</div>
+                            <div style="font-size:18px;font-weight:800;color:var(--navy);">${currentTurn.name} — ${getPayoutMonth(currentTurn.month)}</div>
+                            <div style="font-size:14px;color:var(--teal);font-weight:700;margin-top:2px;">${formatAr(payout)} د.ع</div>
+                            <button class="detail-mark-btn" data-circle-id="${id}" data-month="${currentTurnIdx}">✅ تم الاستلام</button>
+                        </div>
+                    </div>`;
+            }
+
+            // Timeline
+            html += `<div class="detail-section">
+                <div class="detail-section-title">📅 الجدول</div>
+                <div class="detail-timeline">`;
+
+            circle.payoutTracker.forEach((p, i) => {
+                const rowClass = p.status === 'current' ? 'current' : p.status === 'paid' ? 'paid' : '';
+                const iconClass = p.status;
+                const icon = p.status === 'paid' ? '✓' : p.status === 'current' ? '◉' : toAr(i + 1);
+                const statusText = p.status === 'paid' ? 'تم' : p.status === 'current' ? '⏳ الآن' : '—';
+                const statusClass = p.status;
+                html += `
+                    <div class="detail-tl-row ${rowClass}">
+                        <div class="detail-tl-icon ${iconClass}">${icon}</div>
+                        <div class="detail-tl-info">
+                            <div class="detail-tl-name">${p.name}${i === 0 && p.name === 'أنت' ? ' (المنشئ)' : ''}</div>
+                            <div class="detail-tl-month">${getPayoutMonth(i)}</div>
+                        </div>
+                        <span class="detail-tl-status ${statusClass}">${statusText}</span>
+                    </div>`;
+            });
+
+            html += `</div></div>`;
+
+            // Members
+            html += `<div class="detail-section">
+                <div class="detail-section-title">👥 الأعضاء (${toAr(joinedCount)}/${toAr(circle.members)})</div>`;
+
+            // Creator (always first)
+            html += `
+                <div class="detail-member-row">
+                    <div class="detail-member-avatar" style="background:var(--navy);">أ</div>
+                    <div class="detail-member-info">
+                        <div class="detail-member-name">أنت (المنشئ)</div>
+                    </div>
+                    <span class="detail-member-status joined">✅</span>
+                </div>`;
+
+            circle.contacts.forEach(c => {
+                html += `
+                    <div class="detail-member-row">
+                        <div class="detail-member-avatar" style="background:${c.color};">${c.name.charAt(0)}</div>
+                        <div class="detail-member-info">
+                            <div class="detail-member-name">${c.name}</div>
+                            <div class="detail-member-phone">${c.phone}</div>
+                        </div>
+                        <span class="detail-member-status ${c.status}">${c.status === 'joined' ? '✅ انضم' : '⏳ بانتظار'}</span>
+                    </div>`;
+            });
+
+            html += `</div>`;
+
+            // Actions
+            const inviteLink = `${window.location.origin}${window.location.pathname}#join?id=${circle.id}`;
+            html += `
+                <div style="margin-top:20px;">
+                    <button class="detail-action-btn primary" onclick="navigator.clipboard.writeText('${inviteLink}').then(()=>{this.textContent='✅ تم نسخ الرابط';setTimeout(()=>{this.innerHTML='📤 شارك رابط الدعوة'},1500)})">📤 شارك رابط الدعوة</button>
+                    <button class="detail-action-btn secondary" onclick="window.open('https://wa.me/?text='+encodeURIComponent('انضم لسِلفة \\&quot;${circle.name}\\&quot;:\\n${inviteLink}'),'_blank')">واتساب</button>
+                    <button class="detail-action-btn danger" data-delete-id="${circle.id}">🗑️ حذف السِلفة</button>
+                </div>`;
+
+            container.innerHTML = html;
+
+            // Attach mark-paid handler
+            const markBtn = container.querySelector('.detail-mark-btn');
+            if (markBtn) {
+                markBtn.addEventListener('click', () => {
+                    const cId = markBtn.dataset.circleId;
+                    const mIdx = parseInt(markBtn.dataset.month);
+                    const c = getCircle(cId);
+                    if (!c) return;
+                    c.payoutTracker[mIdx].status = 'paid';
+                    if (mIdx + 1 < c.payoutTracker.length) {
+                        c.payoutTracker[mIdx + 1].status = 'current';
+                    }
+                    updateCircle(cId, { payoutTracker: c.payoutTracker });
+                    renderCircleDetail(cId);
+                });
+            }
+
+            // Attach delete handler
+            const delBtn = container.querySelector('[data-delete-id]');
+            if (delBtn) {
+                delBtn.addEventListener('click', () => {
+                    if (confirm('هل تريد حذف هذه السِلفة؟ لا يمكن التراجع.')) {
+                        deleteCircle(delBtn.dataset.deleteId);
+                        location.hash = '#dashboard';
+                    }
+                });
+            }
+        }
+
+        // ═══════ JOIN VIEW ═══════
+        function normalizePhone(phone) {
+            return phone.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+                        .replace(/\D/g, '')
+                        .replace(/^964/, '0');
+        }
+
+        function renderJoinView(id) {
+            const container = document.getElementById('joinContent');
+            if (!container) return;
+
+            // Show loading skeleton first
+            container.innerHTML = `
+                <div class="join-logo"><span>سِـ<em>لفة</em></span></div>
+                <div class="join-card">
+                    <div class="skeleton" style="height:24px;width:60%;margin:0 auto 16px;"></div>
+                    <div class="skeleton" style="height:42px;width:80%;margin:0 auto 8px;"></div>
+                    <div class="skeleton" style="height:14px;width:50%;margin:0 auto 20px;"></div>
+                    <div class="skeleton" style="height:48px;width:100%;margin-bottom:12px;"></div>
+                    <div class="skeleton" style="height:48px;width:100%;"></div>
+                </div>`;
+
+            setTimeout(() => {
+                const circle = getCircle(id);
+                if (!circle) {
+                    renderJoinState(container, 'not-found');
+                    return;
+                }
+
+                const joinedCount = circle.contacts.filter(c => c.status === 'joined').length + 1;
+                const isFull = joinedCount >= circle.members;
+
+                if (isFull) {
+                    renderJoinState(container, 'full', circle);
+                    return;
+                }
+
+                const payout = circle.amount * circle.members;
+                const progressPct = Math.round((joinedCount / circle.members) * 100);
+
+                container.innerHTML = `
+                    <div class="join-logo"><span>سِـ<em>لفة</em></span></div>
+                    <div class="join-card">
+                        <div class="join-card-name">🏦 ${circle.name}</div>
+                        <div class="join-card-hero">${formatAr(payout)} د.ع</div>
+                        <div class="join-card-hero-label">ستستلمها في دورك</div>
+
+                        <div class="join-meta-row">
+                            <div class="join-meta-item">
+                                <span class="join-meta-label">الحصة الشهرية</span>
+                                <span class="join-meta-value">${formatAr(circle.amount)} د.ع</span>
+                            </div>
+                            <div class="join-meta-divider"></div>
+                            <div class="join-meta-item">
+                                <span class="join-meta-label">المدة</span>
+                                <span class="join-meta-value">${toAr(circle.members)} أشهر</span>
+                            </div>
+                        </div>
+
+                        <div class="join-creator">
+                            <div class="join-creator-avatar">${circle.creatorName.charAt(0)}</div>
+                            <div class="join-creator-info">
+                                <div class="join-creator-name">${circle.creatorName}</div>
+                                <div class="join-creator-role">المنشئ</div>
+                            </div>
+                        </div>
+
+                        <div class="join-progress">
+                            <div class="join-progress-bar">
+                                <div class="join-progress-fill" style="width:${progressPct}%;"></div>
+                            </div>
+                            <span class="join-progress-text">${toAr(joinedCount)} من ${toAr(circle.members)} انضموا</span>
+                        </div>
+                    </div>
+
+                    <div class="join-form">
+                        <div class="join-input-group">
+                            <label>اسمك</label>
+                            <input type="text" id="joinName" placeholder="مثلاً: أحمد" autocomplete="name">
+                        </div>
+                        <div class="join-input-group">
+                            <label>رقم هاتفك</label>
+                            <input type="tel" id="joinPhone" placeholder="٠٧٧٠١٢٣٤٥٦٧" dir="ltr" style="text-align:right;" autocomplete="tel">
+                        </div>
+                        <button class="join-submit-btn" id="joinSubmitBtn" disabled>✅ انضم للسِلفة</button>
+                    </div>
+
+                    <div class="join-footer-link" onclick="location.hash='#landing'">ماهي السِلفة؟</div>`;
+
+                // Validation
+                const nameEl = document.getElementById('joinName');
+                const phoneEl = document.getElementById('joinPhone');
+                const submitBtn = document.getElementById('joinSubmitBtn');
+                const iraqiPhoneRegex = /^07[3-9]\d{8}$/;
+
+                function validateJoin() {
+                    const name = nameEl.value.trim();
+                    const phone = normalizePhone(phoneEl.value);
+                    submitBtn.disabled = !(name.length >= 2 && iraqiPhoneRegex.test(phone));
+                }
+
+                nameEl.addEventListener('input', validateJoin);
+                phoneEl.addEventListener('input', validateJoin);
+
+                submitBtn.addEventListener('click', () => {
+                    const name = nameEl.value.trim();
+                    const phone = normalizePhone(phoneEl.value);
+                    const freshCircle = getCircle(id);
+                    if (!freshCircle) return;
+
+                    // Find matching contact by phone
+                    const match = freshCircle.contacts.find(c => normalizePhone(c.phone) === phone);
+                    if (match) {
+                        match.status = 'joined';
+                        match.name = name;
+                    } else {
+                        // Open join — add as new contact
+                        freshCircle.contacts.push({
+                            id: 'j_' + Date.now(),
+                            name, phone,
+                            color: ['#0D9488','#7C3AED','#DC2626','#2563EB','#D97706','#059669'][Math.floor(Math.random() * 6)],
+                            status: 'joined'
+                        });
+                    }
+                    updateCircle(id, { contacts: freshCircle.contacts });
+                    renderJoinState(container, 'joined', freshCircle);
+                });
+
+            }, 400);
+        }
+
+        function renderJoinState(container, state, circle) {
+            const states = {
+                'not-found': {
+                    icon: '🔗',
+                    title: 'هذا الرابط غير صالح',
+                    desc: 'الرابط قد يكون خاطئ أو منتهي الصلاحية',
+                    btnText: '+ أنشئ سِلفتك الخاصة',
+                    btnAction: "location.hash=''"
+                },
+                'full': {
+                    icon: '🎉',
+                    title: 'السِلفة مكتملة!',
+                    desc: `"${circle?.name}" اكتمل عدد أعضائها`,
+                    btnText: '+ أنشئ سِلفتك الخاصة',
+                    btnAction: "location.hash=''"
+                },
+                'joined': {
+                    icon: '✅',
+                    title: 'تم انضمامك!',
+                    desc: `انضممت إلى "${circle?.name}" بنجاح`,
+                    btnText: 'شاهد السِلفة',
+                    btnAction: `location.hash='#circle?id=${circle?.id}'`
+                }
+            };
+            const s = states[state];
+            container.innerHTML = `
+                <div class="join-logo"><span>سِـ<em>لفة</em></span></div>
+                <div class="join-state">
+                    <div class="join-state-icon">${s.icon}</div>
+                    <div class="join-state-title">${s.title}</div>
+                    <div class="join-state-desc">${s.desc}</div>
+                    <button class="join-state-btn" onclick="${s.btnAction}">${s.btnText}</button>
+                </div>`;
+        }
+
+        // ═══════ DEMO SEED DATA ═══════
+        function seedDemoData() {
+            const demoCircles = [
+                {
+                    id: 'demo01',
+                    name: 'سِلفة العائلة',
+                    amount: 50000,
+                    members: 5,
+                    createdAt: '2026-04-01',
+                    creatorName: 'أنت',
+                    contacts: [
+                        { id: 'd1', name: 'علي كريم', phone: '07701234567', color: '#0D9488', status: 'joined' },
+                        { id: 'd2', name: 'فاطمة حسن', phone: '07819876543', color: '#7C3AED', status: 'joined' },
+                        { id: 'd3', name: 'حسن عبدالله', phone: '07505551234', color: '#DC2626', status: 'joined' },
+                        { id: 'd4', name: 'زينب علي', phone: '07703334455', color: '#2563EB', status: 'joined' }
+                    ],
+                    cycleOrder: ['أنت', 'علي كريم', 'فاطمة حسن', 'حسن عبدالله', 'زينب علي'],
+                    payoutTracker: [
+                        { month: 0, name: 'أنت', status: 'paid' },
+                        { month: 1, name: 'علي كريم', status: 'current' },
+                        { month: 2, name: 'فاطمة حسن', status: 'upcoming' },
+                        { month: 3, name: 'حسن عبدالله', status: 'upcoming' },
+                        { month: 4, name: 'زينب علي', status: 'upcoming' }
+                    ]
+                },
+                {
+                    id: 'demo02',
+                    name: 'سِلفة الشغل',
+                    amount: 100000,
+                    members: 4,
+                    createdAt: '2026-04-05',
+                    creatorName: 'أنت',
+                    contacts: [
+                        { id: 'd5', name: 'محمد جاسم', phone: '07812223344', color: '#D97706', status: 'joined' },
+                        { id: 'd6', name: 'نور الهدى', phone: '07507778899', color: '#059669', status: 'pending' },
+                        { id: 'd7', name: 'سارة محمود', phone: '07704445566', color: '#BE185D', status: 'pending' }
+                    ],
+                    cycleOrder: ['أنت', 'محمد جاسم', 'نور الهدى', 'سارة محمود'],
+                    payoutTracker: [
+                        { month: 0, name: 'أنت', status: 'upcoming' },
+                        { month: 1, name: 'محمد جاسم', status: 'upcoming' },
+                        { month: 2, name: 'نور الهدى', status: 'upcoming' },
+                        { month: 3, name: 'سارة محمود', status: 'upcoming' }
+                    ]
+                }
+            ];
+            localStorage.setItem('silfa_circles', JSON.stringify(demoCircles));
+        }
+
+        // Triple-tap logo to seed demo data
+        let logoTapCount = 0;
+        let logoTapTimer = null;
+        document.querySelector('.dash-topbar-title')?.addEventListener('click', () => {
+            logoTapCount++;
+            clearTimeout(logoTapTimer);
+            logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 600);
+            if (logoTapCount >= 3) {
+                logoTapCount = 0;
+                seedDemoData();
+                renderDashboard();
+            }
+        });
+
+        // Also support ?demo=1 query param
+        if (window.location.search.includes('demo=1')) {
+            seedDemoData();
+            location.hash = '#dashboard';
+        }
+
+        // ═══════ INITIAL ROUTING ═══════
+        // Run router on load if there's a hash
+        if (window.location.hash && window.location.hash !== '#') {
+            router();
+        } else {
+            // Default behavior — show wizard
         }
 
     </script>
