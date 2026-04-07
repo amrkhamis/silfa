@@ -1974,6 +1974,15 @@
             border-color: rgba(245,197,66,0.4);
         }
 
+        @keyframes pillPulse {
+            0%   { transform: scale(1); }
+            40%  { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(245,197,66,0.2); }
+            100% { transform: scale(1); box-shadow: none; }
+        }
+        .selection-counter-pill.just-filled {
+            animation: pillPulse 0.5s ease forwards;
+        }
+
         .sc-selected {
             font-size: 20px;
             font-weight: 800;
@@ -2185,6 +2194,17 @@
         }
 
         .shuffle-btn:hover { border-color: var(--teal); color: var(--teal); background: rgba(13,148,136,0.04); }
+        .quraa-btn { font-size: 15px; font-weight: 700; }
+
+        @keyframes rowShake {
+            0%   { transform: translateX(0); }
+            20%  { transform: translateX(-6px) rotate(-1deg); }
+            40%  { transform: translateX(6px) rotate(1deg); }
+            60%  { transform: translateX(-4px); }
+            80%  { transform: translateX(4px); }
+            100% { transform: translateX(0); }
+        }
+        .cycle-row.shaking { animation: rowShake 0.35s ease both; }
 
         .cycle-list { display: flex; flex-direction: column; gap: 6px; }
 
@@ -2202,7 +2222,6 @@
             user-select: none;
         }
 
-        .cycle-row:active { cursor: grabbing; }
         .cycle-row:hover  { border-color: rgba(13,148,136,0.3); box-shadow: 0 2px 8px rgba(27,54,93,0.06); }
 
         .cycle-row.you-row {
@@ -2210,8 +2229,15 @@
             border-color: rgba(245,197,66,0.4);
         }
 
-        .cycle-row.dragging  { opacity: 0.45; border-style: dashed; }
-        .cycle-row.drag-over { border-color: var(--teal); background: rgba(13,148,136,0.04); }
+        .cycle-arrows { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+        .cycle-arrow-btn {
+            width: 26px; height: 26px; border-radius: 6px; border: 1.5px solid var(--border);
+            background: var(--light-bg); cursor: pointer; font-size: 10px; color: var(--text-light);
+            display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+            font-family: inherit;
+        }
+        .cycle-arrow-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .cycle-arrow-btn:not(:disabled):hover { border-color: var(--teal); color: var(--teal); background: rgba(13,148,136,0.06); }
 
         .cycle-drag {
             color: var(--border);
@@ -2336,6 +2362,13 @@
             box-shadow: none;
         }
 
+        /* ── Schedule Summary Bar ── */
+        .schedule-summary-bar {
+            background: rgba(13,148,136,0.06); border: 1.5px solid rgba(13,148,136,0.15);
+            border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 16px;
+            font-size: 13px; color: var(--teal); font-weight: 600; text-align: center;
+        }
+
         /* ── Success ── */
         .wizard-success { text-align: center; padding: 16px 0; }
 
@@ -2401,6 +2434,27 @@
 
         .copy-btn:hover { background: var(--navy-light); }
         .copy-btn.copied { background: var(--teal); }
+
+        .success-summary-card {
+            background: var(--light-bg); border: 1.5px solid var(--border);
+            border-radius: var(--radius); padding: 18px 16px; margin-bottom: 20px; text-align: right;
+        }
+        .ssc-name { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 14px; text-align: center; }
+        .ssc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .ssc-item { display: flex; flex-direction: column; gap: 3px; }
+        .ssc-label { font-size: 11px; color: var(--text-light); font-weight: 500; }
+        .ssc-value { font-size: 15px; font-weight: 700; color: var(--navy); }
+        .ssc-value.highlight { color: var(--teal); }
+        .ssc-dates { font-size: 12px; color: var(--text-light); text-align: center; padding-top: 10px; border-top: 1px solid var(--border); }
+
+        .whatsapp-share-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none;
+            background: #25D366; color: white; font-size: 16px; font-weight: 700;
+            font-family: inherit; cursor: pointer; margin-bottom: 16px;
+            transition: background 0.2s; box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+        }
+        .whatsapp-share-btn:hover { background: #1fbe5a; }
 
         .share-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 14px; }
 
@@ -2917,12 +2971,12 @@
 
                 <!-- ── Step 4: Cycle Planning ── -->
                 <div class="wizard-step" data-step="4">
+                    <div class="schedule-summary-bar" id="scheduleSummaryBar"></div>
                     <h2 class="wizard-step-title">📅 جدول الاستلام</h2>
                     <p class="wizard-step-desc">رتّب ترتيب الاستلام — اسحب الصفوف لإعادة الترتيب أو اضغط خلط عشوائي.</p>
 
-                    <button class="shuffle-btn" id="shuffleBtn">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
-                        خلط عشوائي
+                    <button class="shuffle-btn quraa-btn" id="shuffleBtn">
+                        🎲 سحب القرعة
                     </button>
 
                     <div class="cycle-list" id="cycleList"></div>
@@ -2935,32 +2989,51 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
                         </div>
                         <h2>سِلفتك جاهزة!</h2>
-                        <p>أُرسلت الدعوات — في انتظار موافقة الأعضاء.</p>
+                        <p style="color:var(--text-light);font-size:14px;margin-bottom:20px;">أرسل الدعوات لأعضائك للانضمام</p>
 
+                        <!-- Summary card -->
+                        <div class="success-summary-card" id="successSummaryCard">
+                            <div class="ssc-name" id="sscName">—</div>
+                            <div class="ssc-grid">
+                                <div class="ssc-item">
+                                    <span class="ssc-label">الحصة الشهرية</span>
+                                    <span class="ssc-value" id="sscMonthly">—</span>
+                                </div>
+                                <div class="ssc-item">
+                                    <span class="ssc-label">إجمالي الاستلام</span>
+                                    <span class="ssc-value highlight" id="sscPayout">—</span>
+                                </div>
+                                <div class="ssc-item">
+                                    <span class="ssc-label">عدد الأعضاء</span>
+                                    <span class="ssc-value" id="sscMembers">—</span>
+                                </div>
+                                <div class="ssc-item">
+                                    <span class="ssc-label">مدة السِلفة</span>
+                                    <span class="ssc-value" id="sscDuration">—</span>
+                                </div>
+                            </div>
+                            <div class="ssc-dates" id="sscDates">—</div>
+                        </div>
+
+                        <!-- Pending members -->
                         <div class="pending-members-section">
-                            <div class="pending-members-label">الدعوات المُرسَلة</div>
+                            <div class="pending-members-label">الأعضاء المدعوون</div>
                             <div class="pending-members-list" id="pendingMembersList"></div>
                         </div>
 
                         <p class="success-notify-nudge">🔔 سنُعلمك فور موافقة كل عضو</p>
 
-                        <div class="invite-alt-divider">أو شارك الرابط مباشرة</div>
+                        <!-- WhatsApp primary share -->
+                        <button class="whatsapp-share-btn" id="whatsappShareBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            دعوة الجميع عبر واتساب
+                        </button>
 
+                        <!-- Copy link fallback -->
+                        <div class="invite-alt-divider">أو شارك الرابط مباشرة</div>
                         <div class="invite-link-box">
                             <input type="text" id="inviteLink" value="silfa.app/join/xK9mQ2" readonly>
                             <button class="copy-btn" id="copyBtn">نسخ الرابط</button>
-                        </div>
-
-                        <div class="share-buttons">
-                            <button class="share-btn" aria-label="واتساب">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                            </button>
-                            <button class="share-btn" aria-label="تيليجرام">
-                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                            </button>
-                            <button class="share-btn" aria-label="رسالة نصية">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -3148,7 +3221,6 @@
         let circleData       = { name: '', amount: 0, members: 5 };
         let selectedContacts = [];
         let cycleOrder       = [];
-        let dragSrcIndex     = null;
 
         const sampleContacts = [
             { id: 'c1',  name: 'أحمد حسين',   phone: '٠٧٧٠١٢٣٤٥٦٧', color: '#0D9488' },
@@ -3470,7 +3542,14 @@
             const fill = document.getElementById('scProgressFill');
             if (fill) fill.style.width = (slots > 0 ? (n / slots) * 100 : 0) + '%';
             const pill = document.getElementById('selectionCounterPill');
-            if (pill) pill.classList.toggle('full', n >= slots && slots > 0);
+            if (pill) {
+                pill.classList.toggle('full', n >= slots && slots > 0);
+                if (n >= slots && slots > 0) {
+                    pill.classList.remove('just-filled');
+                    void pill.offsetWidth;
+                    pill.classList.add('just-filled');
+                }
+            }
         }
 
         document.getElementById('contactsSearch').addEventListener('input', filterContacts);
@@ -3502,6 +3581,14 @@
             const name  = nameInput.value.trim();
             const phone = phoneInput.value.trim();
             if (!name) return;
+
+            // Validate Iraqi phone format if provided (07XX-XXX-XXXX)
+            if (phone && !/^07[0-9]{9}$/.test(phone.replace(/[\s\-]/g, ''))) {
+                phoneInput.style.borderColor = '#DC2626';
+                phoneInput.placeholder = 'مثال: 07701234567';
+                setTimeout(() => { phoneInput.style.borderColor = ''; phoneInput.placeholder = 'رقم الهاتف'; }, 2000);
+                return;
+            }
 
             const slots = circleData.members - 1;
             if (selectedContacts.length >= slots) return;
@@ -3551,8 +3638,7 @@
             const payout = circleData.amount * circleData.members;
             const list   = document.getElementById('cycleList');
             list.innerHTML = cycleOrder.map((m, i) => `
-                <div class="cycle-row ${m.isYou ? 'you-row' : ''}" draggable="true" data-index="${i}">
-                    <div class="cycle-drag">⠿</div>
+                <div class="cycle-row ${m.isYou ? 'you-row' : ''}" data-index="${i}">
                     <div class="cycle-turn">${toAr(i + 1)}</div>
                     <div class="cycle-avatar" style="background:${m.color};">${m.name.charAt(0)}</div>
                     <div class="cycle-info">
@@ -3560,27 +3646,79 @@
                         <span class="cycle-month">${getPayoutMonth(i)}</span>
                     </div>
                     <div class="cycle-amount">${formatAr(payout)} د.ع</div>
+                    <div class="cycle-arrows">
+                        <button class="cycle-arrow-btn cycle-up" data-index="${i}" ${i === 0 ? 'disabled' : ''}>▲</button>
+                        <button class="cycle-arrow-btn cycle-down" data-index="${i}" ${i === cycleOrder.length - 1 ? 'disabled' : ''}>▼</button>
+                    </div>
                 </div>
             `).join('');
 
-            list.querySelectorAll('.cycle-row').forEach(row => {
-                row.addEventListener('dragstart', e => { dragSrcIndex = parseInt(e.currentTarget.dataset.index); e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; });
-                row.addEventListener('dragover',  e => { e.preventDefault(); document.querySelectorAll('.cycle-row').forEach(r => r.classList.remove('drag-over')); e.currentTarget.classList.add('drag-over'); });
-                row.addEventListener('drop',      e => { e.preventDefault(); const dest = parseInt(e.currentTarget.dataset.index); if (dragSrcIndex !== dest) { const moved = cycleOrder.splice(dragSrcIndex, 1)[0]; cycleOrder.splice(dest, 0, moved); renderCycleRows(); } });
-                row.addEventListener('dragend',   e => { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.cycle-row').forEach(r => r.classList.remove('drag-over')); dragSrcIndex = null; });
+            list.querySelectorAll('.cycle-up').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.index);
+                    if (idx > 0) {
+                        [cycleOrder[idx - 1], cycleOrder[idx]] = [cycleOrder[idx], cycleOrder[idx - 1]];
+                        renderCycleRows();
+                    }
+                });
             });
+            list.querySelectorAll('.cycle-down').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const idx = parseInt(btn.dataset.index);
+                    if (idx < cycleOrder.length - 1) {
+                        [cycleOrder[idx], cycleOrder[idx + 1]] = [cycleOrder[idx + 1], cycleOrder[idx]];
+                        renderCycleRows();
+                    }
+                });
+            });
+
+            renderScheduleSummary();
+        }
+
+        function renderScheduleSummary() {
+            const bar = document.getElementById('scheduleSummaryBar');
+            if (!bar || cycleOrder.length === 0) return;
+            const start = getPayoutMonth(0);
+            const end   = getPayoutMonth(cycleOrder.length - 1);
+            bar.textContent = `السِلفة تبدأ ${start} وتنتهي ${end}`;
         }
 
         document.getElementById('shuffleBtn').addEventListener('click', () => {
-            for (let i = cycleOrder.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [cycleOrder[i], cycleOrder[j]] = [cycleOrder[j], cycleOrder[i]];
-            }
-            renderCycleRows();
+            const rows = document.querySelectorAll('.cycle-row');
+
+            // Phase 1: shake all rows
+            rows.forEach((r, i) => {
+                r.classList.remove('shaking');
+                void r.offsetWidth;
+                setTimeout(() => r.classList.add('shaking'), i * 25);
+            });
+
+            // Phase 2: after shake, shuffle data and re-render
+            setTimeout(() => {
+                for (let i = cycleOrder.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cycleOrder[i], cycleOrder[j]] = [cycleOrder[j], cycleOrder[i]];
+                }
+                renderCycleRows();
+            }, 400);
         });
 
         // ── Step 5: Success ──
         function populatePendingList() {
+            // Fill summary card
+            const name    = circleData.name || 'سِلفتي';
+            const monthly = circleData.amount;
+            const payout  = monthly * circleData.members;
+            const total   = circleData.members;
+            const el = id => document.getElementById(id);
+            if (el('sscName'))     el('sscName').textContent     = name;
+            if (el('sscMonthly'))  el('sscMonthly').textContent  = formatAr(monthly) + ' د.ع';
+            if (el('sscPayout'))   el('sscPayout').textContent   = formatAr(payout) + ' د.ع';
+            if (el('sscMembers'))  el('sscMembers').textContent  = toAr(total) + ' أعضاء';
+            if (el('sscDuration')) el('sscDuration').textContent = toAr(total) + ' أشهر';
+            if (el('sscDates'))    el('sscDates').textContent    = `من ${getPayoutMonth(0)} إلى ${getPayoutMonth(total - 1)}`;
+
+            // Fill pending members list
             const list = document.getElementById('pendingMembersList');
             if (!list) return;
             if (selectedContacts.length === 0) {
@@ -3595,6 +3733,15 @@
                 </div>
             `).join('');
         }
+
+        document.getElementById('whatsappShareBtn').addEventListener('click', () => {
+            const name    = circleData.name || 'سِلفتي';
+            const monthly = formatAr(circleData.amount);
+            const payout  = formatAr(circleData.amount * circleData.members);
+            const link    = document.getElementById('inviteLink').value;
+            const msg = `السلام عليكم! 👋\n\nدعوتك للانضمام إلى سِلفة "${name}" 🏦\n\n📅 الحصة الشهرية: ${monthly} د.ع\n💰 ستستلم في دورك: ${payout} د.ع\n\nاضغط للانضمام:\n${link}\n\n— عبر تطبيق سِلفة`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        });
 
         document.getElementById('copyBtn').addEventListener('click', function() {
             document.getElementById('inviteLink').select();

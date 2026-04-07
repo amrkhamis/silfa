@@ -458,7 +458,9 @@ No JS changes needed — the "أنت" row is purely decorative in the HTML; the 
 
 ---
 
-## TICKET 9 — Full-circle Celebration Pulse (Step 3)
+## ~~TICKET 9 — Full-circle Celebration Pulse (Step 3)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added `pillPulse` keyframe + `.just-filled` class. `updateSelectionCounter()` triggers the pulse whenever `n >= slots` by removing/re-adding the class after a forced reflow.
 
 **Why:** When the last contact slot is filled, there's no satisfaction signal. A short animation on the counter pill tells the user "you're done — hit next."
 
@@ -493,7 +495,9 @@ Also update `.sc-selected` style to gold when full — already handled by the ex
 
 ---
 
-## TICKET 10 — قرعة Animation (Step 4)
+## ~~TICKET 10 — قرعة Animation (Step 4)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Renamed button to `🎲 سحب القرعة` with `.quraa-btn` class. Added `rowShake` keyframe + `.shaking` class. Shuffle listener now does phase-1 shake (staggered 25ms per row) then phase-2 data shuffle + re-render at 400ms.
 
 **Why:** The traditional جمعية uses قرعة (a draw/lottery) to assign order. This is culturally trusted and exciting. Renaming "خلط عشوائي" to "سحب القرعة" and adding a brief shake-then-snap animation makes the app feel authentically Iraqi.
 
@@ -547,7 +551,9 @@ document.getElementById('shuffleBtn').addEventListener('click', () => {
 
 ---
 
-## TICKET 11 — Touch Drag Fix (Step 4)
+## ~~TICKET 11 — Touch Drag Fix (Step 4)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Removed `draggable="true"`, `dragSrcIndex`, and all drag event listeners. Replaced `.cycle-drag` handle with `.cycle-arrows` (▲▼ buttons). Each button swaps adjacent entries in `cycleOrder` and calls `renderCycleRows()`.
 
 **Why:** HTML5 `draggable="true"` + `dragstart/dragover/drop` events do not work on iOS Safari. Iraqi users are predominantly on mobile. This makes the reorder feature completely non-functional for most users.
 
@@ -619,7 +625,9 @@ Also remove `let dragSrcIndex = null;` from state variables and remove `draggabl
 
 ---
 
-## TICKET 12 — Schedule Summary Bar (Step 4)
+## ~~TICKET 12 — Schedule Summary Bar (Step 4)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added `#scheduleSummaryBar` div before step 4 title. `renderScheduleSummary()` called from `renderCycleRows()` — shows "السِلفة تبدأ X وتنتهي Y" using `getPayoutMonth()`.
 
 **Why:** "الجدول" feels abstract without knowing when it starts and ends. One line grounds the whole schedule in reality.
 
@@ -654,7 +662,9 @@ Call `renderScheduleSummary()` at the end of `renderCycleRows()` as well (since 
 
 ---
 
-## TICKET 13 — Digital Summary Card + WhatsApp Share (Step 5)
+## ~~TICKET 13 — Digital Summary Card + WhatsApp Share (Step 5)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Replaced step 5 HTML with summary card (`.success-summary-card`, 2×2 grid) + WhatsApp CTA button above the copy-link fallback. `populatePendingList()` now fills the card. WhatsApp listener generates an Arabic pre-written invite message and opens `wa.me/?text=`.
 
 **Why:** (1) The success screen shows no summary of what was created — if you screenshot it, it's meaningless. (2) The WhatsApp button currently does nothing. A pre-written Arabic message template is the single highest-value feature for growth — one tap and the invite is ready to send.
 
@@ -792,7 +802,9 @@ document.getElementById('whatsappShareBtn').addEventListener('click', () => {
 
 ---
 
-## TICKET 14 — Iraqi Phone Validation (Step 3 Manual Add)
+## ~~TICKET 14 — Iraqi Phone Validation (Step 3 Manual Add)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added Iraqi phone regex (`/^07[0-9]{9}$/`) check after stripping spaces/hyphens. Invalid phone turns input border red and shows example placeholder for 2 seconds, then returns without adding the contact.
 
 **Why:** Iraqi numbers follow the format `07XX-XXX-XXXX` (10 digits starting with 07). Validating this specifically prevents garbage data and signals the app knows its audience.
 
