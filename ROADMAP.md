@@ -235,7 +235,9 @@ document.getElementById('customAmount').addEventListener('input', (e) => {
 
 ---
 
-## TICKET 5 — Live Preview Chip (Step 1)
+## ~~TICKET 5 — Live Preview Chip (Step 1)~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added `.step1-preview-chip` with teal styling below the "مجاني" line. `updateStep1Preview()` function shows payout estimate using default 5 members; called from both `amount-btn` click handler and `customAmount` input handler.
 
 **Why:** Users should see the cost/payout impact while still on Step 1, before committing to go to Step 2. One line of dynamic text creates immediate understanding.
 
