@@ -2753,6 +2753,8 @@
                             <button class="amount-btn" data-amount="100000">١٠٠,٠٠٠ <span>د.ع</span></button>
                             <button class="amount-btn" data-amount="150000">١٥٠,٠٠٠ <span>د.ع</span></button>
                             <button class="amount-btn" data-amount="200000">٢٠٠,٠٠٠ <span>د.ع</span></button>
+                            <button class="amount-btn" data-amount="250000">٢٥٠,٠٠٠ <span>د.ع</span></button>
+                            <button class="amount-btn" data-amount="500000">٥٠٠,٠٠٠ <span>د.ع</span></button>
                         </div>
                         <div class="amount-divider">أو أدخل مبلغاً مخصصاً</div>
                         <input type="number" class="wizard-input" id="customAmount" placeholder="المبلغ بالدينار" min="50" style="direction:ltr;text-align:right;">
@@ -3244,9 +3246,10 @@
         });
 
         document.getElementById('customAmount').addEventListener('input', (e) => {
-            const val = parseInt(e.target.value);
+            const raw = e.target.value.replace(/[^0-9]/g, '');
+            const val = parseInt(raw);
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-            if (val > 0) {
+            if (raw && val > 0) {
                 circleData.amount = val;
                 document.querySelectorAll('.amount-btn').forEach(b => {
                     if (parseInt(b.dataset.amount) === val) b.classList.add('selected');

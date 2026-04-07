@@ -117,7 +117,7 @@ No other changes needed.
 
 ---
 
-## TICKET 3 — Circle Type Selector (Step 1)
+## ~~TICKET 3 — Circle Type Selector (Step 1)~~ ⏭ SKIPPED (redundant)
 
 **Why:** Asking "what kind of circle?" instantly personalizes the experience and pre-fills the name, making step 1 take half the effort.
 
@@ -186,7 +186,9 @@ Also add `circleData.type = ''` to the state object at the top (`let circleData 
 
 ---
 
-## TICKET 4 — Amount Presets Expansion + Auto-format
+## ~~TICKET 4 — Amount Presets Expansion + Auto-format~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Added 250k and 500k preset buttons (2×3 grid, CSS already 2-col). Updated `customAmount` listener to strip non-digits before parsing so letters/symbols don't corrupt `circleData.amount`.
 
 **Why:** 50k–200k misses the most common Iraqi جمعية amounts (250k, 500k). Auto-formatting makes large numbers readable.
 
