@@ -1822,6 +1822,13 @@
             box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.08);
         }
 
+        .step1-preview-chip {
+            margin-top: 18px; padding: 12px 16px; border-radius: var(--radius-sm);
+            background: rgba(13,148,136,0.07); border: 1.5px solid rgba(13,148,136,0.2);
+            text-align: center; font-size: 14px; font-weight: 600; color: var(--teal);
+            transition: all 0.3s;
+        }
+
         .amount-divider {
             text-align: center;
             color: var(--text-light);
@@ -2758,6 +2765,9 @@
                         <input type="number" class="wizard-input" id="customAmount" placeholder="المبلغ بالدينار" min="50" style="direction:ltr;text-align:right;">
                     </div>
                     <p style="text-align:center;font-size:12px;color:var(--text-light);margin-top:16px;">🔒 مجاني — لا رسوم، لا بطاقة</p>
+                    <div class="step1-preview-chip" id="step1PreviewChip" style="display:none;">
+                        <span id="step1PreviewText"></span>
+                    </div>
                 </div>
 
                 <!-- ── Step 2: Members ── -->
@@ -3233,6 +3243,19 @@
         // ── Step 1 ──
         document.getElementById('circleName').addEventListener('input', validateStep);
 
+        function updateStep1Preview() {
+            const chip = document.getElementById('step1PreviewChip');
+            const text = document.getElementById('step1PreviewText');
+            if (!chip || !text) return;
+            if (circleData.amount > 0 && circleData.members > 0) {
+                const payout = circleData.amount * circleData.members;
+                text.textContent = `كل عضو يدفع ${formatAr(circleData.amount)} د.ع شهرياً ويستلم ${formatAr(payout)} د.ع في دوره`;
+                chip.style.display = 'block';
+            } else {
+                chip.style.display = 'none';
+            }
+        }
+
         document.querySelectorAll('.amount-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
@@ -3240,6 +3263,7 @@
                 circleData.amount = parseInt(btn.dataset.amount);
                 document.getElementById('customAmount').value = '';
                 validateStep();
+                updateStep1Preview();
             });
         });
 
@@ -3256,6 +3280,7 @@
                 circleData.amount = 0;
             }
             validateStep();
+            updateStep1Preview();
         });
 
         // ── Step 2 ──
