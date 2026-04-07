@@ -3191,7 +3191,13 @@
                 nextBtn.style.display = 'none';
             } else {
                 nextBtn.style.display = '';
-                nextBtn.textContent = step === LAST_INPUT_STEP ? '🎉 أنشئ السِلفة وأرسل الدعوات' : 'التالي';
+                const nextLabels = {
+                    1: 'اختر الأعضاء ←',
+                    2: 'ابدأ اختيار الأعضاء ←',
+                    3: 'رتّب جدول الاستلام ←',
+                    4: '🚀 أطلق السِلفة',
+                };
+                nextBtn.textContent = nextLabels[step] || 'التالي';
             }
 
             if (step === 2) updateMembersPreview();

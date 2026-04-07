@@ -89,7 +89,9 @@ Also update `backBtn` listener to signal direction — it already calls `goToSte
 
 ---
 
-## TICKET 2 — Contextual Next Button Text
+## ~~TICKET 2 — Contextual Next Button Text~~ ✅ DONE
+
+**Status:** Completed 2026-04-07. Replaced the ternary in `goToStep()` with a `nextLabels` map. Step 4 label is `'🚀 أطلق السِلفة'` (matches `LAST_INPUT_STEP = 4`). Success step (5) is unaffected — button is hidden before reaching the label logic.
 
 **Why:** "التالي" is generic. Telling users exactly what happens next reduces hesitation.
 
