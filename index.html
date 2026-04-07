@@ -76,6 +76,7 @@
             background: var(--light-bg);
             line-height: 1.7;
             overflow-x: hidden;
+            overflow-y: hidden; /* wizard is default view; restored when going to landing */
         }
 
         /* ───────── NAV ───────── */
@@ -1588,6 +1589,27 @@
 
         .wizard-close:hover { background: #FEE2E2; color: #DC2626; }
 
+        /* ── Wizard logo header ── */
+        .wizard-logo-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--white);
+            flex-shrink: 0;
+        }
+
+        .wizard-logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .wizard-logo span { color: var(--teal); }
+
         /* ── Steps track ── */
         .wizard-steps-track {
             flex: 1;
@@ -1671,10 +1693,45 @@
 
         .wizard-step {
             display: none;
-            animation: wizardFadeIn 0.35s ease;
+            animation: none;
         }
 
-        .wizard-step.active { display: block; }
+        .wizard-step.active {
+            display: block;
+            animation: stepSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .wizard-step.exit {
+            animation: stepSlideOut 0.22s ease-in both;
+        }
+
+        @keyframes stepSlideIn {
+            from { opacity: 0; transform: translateX(-28px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes stepSlideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(28px); }
+        }
+
+        .wizard-body.going-back .wizard-step.active {
+            animation: stepSlideInBack 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .wizard-body.going-back .wizard-step.exit {
+            animation: stepSlideOutBack 0.22s ease-in both;
+        }
+
+        @keyframes stepSlideInBack {
+            from { opacity: 0; transform: translateX(28px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes stepSlideOutBack {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(-28px); }
+        }
 
         @keyframes wizardFadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -2346,6 +2403,7 @@
     <div id="scroll-progress"></div>
 
     <!-- ═══════ NAV ═══════ -->
+    <div id="landing-page"></div>
     <nav class="nav" id="nav">
         <div class="nav-inner">
             <a href="#" class="logo">سِلـ<span>فة</span></a>
@@ -2631,8 +2689,13 @@
     </section>
 
     <!-- ═══════ WIZARD FULL-SCREEN ═══════ -->
-    <div class="wizard-overlay" id="wizardOverlay">
+    <div class="wizard-overlay active" id="wizardOverlay">
         <div class="wizard-fs">
+
+            <!-- LOGO HEADER -->
+            <div class="wizard-logo-bar">
+                <span class="wizard-logo">سِلـ<span>فة</span></span>
+            </div>
 
             <!-- TOP BAR -->
             <div class="wizard-topbar">
@@ -3038,25 +3101,27 @@
                 closeMobile();
                 resetWizard();
                 overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => document.getElementById('circleName').focus(), 300);
+                document.body.style.overflowY = 'hidden';
+                setTimeout(() => document.getElementById('circleName').focus(), 200);
             });
         });
 
         function closeWizard() {
             overlay.classList.remove('active');
-            document.body.style.overflow = '';
+            document.body.style.overflowY = 'auto';
         }
 
-        closeBtn.addEventListener('click', closeWizard);
-
-        homeBtn.addEventListener('click', () => {
+        function goToLanding() {
             closeWizard();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        closeBtn.addEventListener('click', goToLanding);
+
+        homeBtn.addEventListener('click', goToLanding);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && overlay.classList.contains('active')) closeWizard();
+            if (e.key === 'Escape' && overlay.classList.contains('active')) goToLanding();
         });
 
         function resetWizard() {
@@ -3073,6 +3138,9 @@
             goToStep(1);
         }
 
+        // Wizard is active by default (set in HTML); focus name field on load
+        setTimeout(() => { const el = document.getElementById('circleName'); if (el) el.focus(); }, 300);
+
         backBtn.addEventListener('click', () => {
             if (currentStep > 1 && currentStep <= LAST_INPUT_STEP) goToStep(currentStep - 1);
         });
@@ -3088,11 +3156,22 @@
         });
 
         function goToStep(step) {
+            const goingBack = step < currentStep;
             currentStep = step;
+            const wizardBody = document.querySelector('.wizard-body');
+            wizardBody.classList.toggle('going-back', goingBack);
 
-            stepEls.forEach(s => s.classList.remove('active'));
+            const current = document.querySelector('.wizard-step.active');
+            if (current) {
+                current.classList.add('exit');
+                current.addEventListener('animationend', () => {
+                    current.classList.remove('active', 'exit');
+                }, { once: true });
+            }
             const target = document.querySelector(`.wizard-step[data-step="${step}"]`);
-            if (target) target.classList.add('active');
+            if (target) {
+                setTimeout(() => target.classList.add('active'), 30);
+            }
 
             // Update step track
             wstepDots.forEach(dot => {
